@@ -1,4 +1,5 @@
 import { Column, Entity, Index } from 'typeorm';
+
 import { BaseEntity } from '../../common/entities/base.entity';
 import { UserRole } from '../../common/enums/user-role.enum';
 import { AccountStatus } from '../../common/enums/account-status.enum';
@@ -19,8 +20,11 @@ export class User extends BaseEntity {
   phoneNumber?: string;
 
   @Index({ unique: true })
-  @Column({ nullable: true })
-  email?: string;
+  @Column()
+  email!: string;
+
+  @Column({ select: false })
+  passwordHash!: string;
 
   @Column({
     type: 'enum',
@@ -44,4 +48,7 @@ export class User extends BaseEntity {
 
   @Column({ default: false })
   profileCompleted!: boolean;
+
+  @Column({ default: false })
+  emailVerified!: boolean;
 }

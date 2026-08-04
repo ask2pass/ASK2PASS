@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsNotEmpty,
   IsOptional,
   IsString,
   MinLength,
@@ -7,19 +8,27 @@ import {
 
 export class RegisterUserDto {
   @IsString()
-  @MinLength(2)
+  @IsNotEmpty()
   firstName!: string;
 
-  @IsOptional()
   @IsString()
-  middleName?: string;
-
-  @IsString()
-  @MinLength(2)
+  @IsNotEmpty()
   lastName!: string;
 
+  @IsEmail()
+  email!: string;
+
   @IsString()
+  @MinLength(8)
+  password!: string;
+
+  @IsString()
+  @IsNotEmpty()
   stateOfResidence!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  onboardingChannel!: string;
 
   @IsOptional()
   @IsString()
@@ -30,24 +39,6 @@ export class RegisterUserDto {
   phoneNumber?: string;
 
   @IsOptional()
-  @IsEmail()
-  email?: string;
-
-  @IsOptional()
   @IsString()
   residentialAddress?: string;
-
-  @IsOptional()
-  @IsString()
-  addressOfOrigin?: string;
-
-  @IsString()
-  onboardingChannel!: string;
-
-  @IsOptional()
-  @IsString()
-  referralCode?: string;
-
-  @IsString()
-  subscriptionPlan!: string;
 }

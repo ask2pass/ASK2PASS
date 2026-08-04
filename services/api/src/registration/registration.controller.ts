@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 
-import { RegisterUserDto } from './dto/register-user.dto';
 import { RegistrationService } from './registration.service';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 @Controller('registration')
 export class RegistrationController {
@@ -11,8 +11,8 @@ export class RegistrationController {
 
   @Post()
   register(
-    @Body() registerUserDto: RegisterUserDto,
+    @Body() dto: RegisterUserDto,
   ) {
-    return this.registrationService.register(registerUserDto);
+    return this.registrationService.register(dto);
   }
 }
