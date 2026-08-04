@@ -13,6 +13,10 @@ import { SubscriptionModule } from './subscription/subscription.module';
 import { WalletLedgerModule } from './wallet-ledger/wallet-ledger.module';
 import { RegistrationModule } from './registration/registration.module';
 import { IdentityModule } from './identity/identity.module';
+import { RolesModule } from './roles/roles.module';
+import { AuditModule } from './audit/audit.module';
+import { DatabaseModule } from './database/database.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -54,6 +58,15 @@ import { IdentityModule } from './identity/identity.module';
     RegistrationModule,
 
     IdentityModule,
+
+
+    RolesModule,
+
+    AuditModule,
+
+    DatabaseModule,
+
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],
