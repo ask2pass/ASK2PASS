@@ -1,25 +1,19 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-
-import { User } from '../user/entities/user.entity';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { UserService } from '../user/user.service';
+import { AuditService } from '../audit/audit.service';
 import { CompleteOnboardingDto } from './dto/complete-onboarding.dto';
 
 @Injectable()
 export class OnboardingService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private readonly userService: UserService,
+    private readonly auditService: AuditService,
   ) {}
 
-  async complete(
-    userId: string,
-    dto: CompleteOnboardingDto,
-  ): Promise<User> {
-    const user = await this.userRepository.findOne({
+  async complete(userId: string, dto: CompleteOnboardingDto) {
+    const repository = this.userService.getRepository();
+
+    const user = await repository.findOne({
       where: { id: userId },
     });
 
@@ -27,16 +21,28 @@ export class OnboardingService {
       throw new NotFoundException('User not found');
     }
 
-    if (dto.residentialAddress) {
-      user.residentialAddress = dto.residentialAddress;
-    }
+    user.residentialAddress =
+      dto.residentialAddress ?? user.residentialAddress;
 
-    if (dto.addressOfOrigin) {
-      user.addressOfOrigin = dto.addressOfOrigin;
-    }
+    user.addressOfOrigin =
+      dto.addressOfOrigin ?? user.addressOfOrigin;
 
     user.profileCompleted = true;
 
-    return this.userRepository.save(user);
+    const savedUser = await repository.save(user);
+
+    await this.auditService.log(
+      'ONBOARDING_COMPLETED',
+      savedUser.id,
+      {
+        profileCompleted: true,
+      },
+    );
+
+    return {
+      message: 'Onboarding completed successfully',
+      userId: savedUser.id,
+      profileCompleted: savedUser.profileCompleted,
+    };
   }
 }

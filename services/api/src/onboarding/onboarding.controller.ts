@@ -1,10 +1,4 @@
-import {
-  Body,
-  Controller,
-  Param,
-  Post,
-} from '@nestjs/common';
-
+import { Body, Controller, Param, Post } from '@nestjs/common';
 import { OnboardingService } from './onboarding.service';
 import { CompleteOnboardingDto } from './dto/complete-onboarding.dto';
 
@@ -14,8 +8,8 @@ export class OnboardingController {
     private readonly onboardingService: OnboardingService,
   ) {}
 
-  @Post('complete/:userId')
-  async complete(
+  @Post(':userId/complete')
+  complete(
     @Param('userId') userId: string,
     @Body() dto: CompleteOnboardingDto,
   ) {
