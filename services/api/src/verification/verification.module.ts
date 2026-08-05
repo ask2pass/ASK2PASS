@@ -4,13 +4,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { VerificationController } from './verification.controller';
 import { VerificationService } from './verification.service';
 
-import { VerificationToken } from '../auth/entities/verification-token.entity';
+import { VerificationCode } from './entities/verification-code.entity';
 import { User } from '../user/entities/user.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      VerificationToken,
+      VerificationCode,
       User,
     ]),
   ],
