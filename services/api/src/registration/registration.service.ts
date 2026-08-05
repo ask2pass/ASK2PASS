@@ -7,6 +7,7 @@ import { AuthService } from '../auth/auth.service';
 import { WalletService } from '../wallet/wallet.service';
 import { WalletLedgerService } from '../wallet-ledger/wallet-ledger.service';
 import { AuditService } from '../audit/audit.service';
+import { VerificationService } from '../verification/verification.service';
 
 import { UserRole } from '../common/enums/user-role.enum';
 import { AccountStatus } from '../common/enums/account-status.enum';
@@ -20,6 +21,7 @@ export class RegistrationService {
     private readonly walletService: WalletService,
     private readonly walletLedgerService: WalletLedgerService,
     private readonly auditService: AuditService,
+    private readonly verificationService: VerificationService,
   ) {}
 
   async register(dto: RegisterUserDto) {
@@ -52,6 +54,12 @@ export class RegistrationService {
 
     const ledger =
       await this.walletLedgerService.createInitialEntry(wallet);
+
+    await this.verificationService.generateEmailVerification(savedUser.id);
+
+    if (savedUser.phoneNumber) {
+      await this.verificationService.generatePhoneVerification(savedUser.id);
+    }
 
     await this.auditService.log(
       'USER_REGISTRATION_COMPLETED',

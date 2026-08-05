@@ -6,6 +6,7 @@ import { UserModule } from '../user/user.module';
 import { WalletModule } from '../wallet/wallet.module';
 import { WalletLedgerModule } from '../wallet-ledger/wallet-ledger.module';
 import { SubscriptionModule } from '../subscription/subscription.module';
+import { VerificationModule } from '../verification/verification.module';
 
 import { RegistrationController } from './registration.controller';
 import { RegistrationService } from './registration.service';
@@ -18,6 +19,7 @@ import { RegistrationService } from './registration.service';
     WalletModule,
     WalletLedgerModule,
     SubscriptionModule,
+    VerificationModule,
   ],
   controllers: [RegistrationController],
   providers: [RegistrationService],
