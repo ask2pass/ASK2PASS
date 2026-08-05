@@ -17,6 +17,8 @@ import { RolesModule } from './roles/roles.module';
 import { AuditModule } from './audit/audit.module';
 import { DatabaseModule } from './database/database.module';
 import { CommonModule } from './common/common.module';
+import { OnboardingModule } from './onboarding/onboarding.module';
+import { VerificationModule } from './verification/verification.module';
 
 @Module({
   imports: [
@@ -67,6 +69,10 @@ import { CommonModule } from './common/common.module';
     DatabaseModule,
 
     CommonModule,
+
+    OnboardingModule,
+
+    VerificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
