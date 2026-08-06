@@ -5,12 +5,15 @@ import { Repository } from 'typeorm';
 import { Membership } from './entities/membership/membership';
 import { MembershipStatus } from './enums/membership-status.enum';
 import { User } from '../user/entities/user.entity';
+import { NotificationService } from '../notification/notification.service';
+import { TrialNotificationType } from './enums/trial-notification-type.enum';
 
 @Injectable()
 export class MembershipService {
   constructor(
     @InjectRepository(Membership)
     private readonly membershipRepository: Repository<Membership>,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async createTrial(user: User): Promise<Membership> {
@@ -27,15 +30,19 @@ export class MembershipService {
       renewalCount: 0,
     });
 
-    return this.membershipRepository.save(membership);
+    const saved = await this.membershipRepository.save(membership);
+
+    await this.notificationService.createNotification(
+      user,
+      TrialNotificationType.WELCOME,
+    );
+
+    return saved;
   }
 
   async getAccessStatus(userId: string) {
     const membership = await this.membershipRepository.findOne({
-      where: {
-        user: { id: userId },
-      },
-      relations: ['user'],
+      where: { user: { id: userId } },
     });
 
     if (!membership) {
@@ -47,11 +54,12 @@ export class MembershipService {
     if (!membership.lifetime && membership.accessExpiresAt < now) {
       membership.accessGranted = false;
       membership.status = MembershipStatus.EXPIRED;
+
       await this.membershipRepository.save(membership);
     }
 
     return {
-      status: membership.status,
+      membershipStatus: membership.status,
       accessGranted: membership.accessGranted,
       accessExpiresAt: membership.accessExpiresAt,
     };
