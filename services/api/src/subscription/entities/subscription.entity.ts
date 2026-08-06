@@ -25,6 +25,9 @@ export class Subscription extends BaseEntity {
   @Column({ type: 'timestamptz' })
   endDate!: Date;
 
+  @Column({ type: 'timestamptz' })
+  accessExpiresAt!: Date;
+
   @Column({
     default: true,
   })
