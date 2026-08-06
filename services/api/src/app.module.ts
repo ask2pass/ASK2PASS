@@ -20,6 +20,7 @@ import { CommonModule } from './common/common.module';
 import { OnboardingModule } from './onboarding/onboarding.module';
 import { VerificationModule } from './verification/verification.module';
 import { MembershipModule } from './membership/membership.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -76,6 +77,8 @@ import { MembershipModule } from './membership/membership.module';
     VerificationModule,
 
     MembershipModule,
+
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
