@@ -1,4 +1,21 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Param, Post } from '@nestjs/common';
+import { NotificationService } from './notification.service';
 
-@Controller('notification')
-export class NotificationController {}
+@Controller('notifications')
+export class NotificationController {
+  constructor(
+    private readonly notificationService: NotificationService,
+  ) {}
+
+  @Post('deliver/:userId/:type')
+  async create(
+    @Param('userId') userId: string,
+    @Param('type') type: string,
+  ) {
+    return {
+      message: 'Notification event queued',
+      userId,
+      type,
+    };
+  }
+}
