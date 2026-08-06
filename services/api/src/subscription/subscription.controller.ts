@@ -13,7 +13,7 @@ export class SubscriptionController {
     @Param('userId') userId: string,
   ) {
     return {
-      message: 'Subscription activation endpoint ready',
+      message: 'Subscription activation endpoint scaffolded',
       userId,
       planId,
     };
