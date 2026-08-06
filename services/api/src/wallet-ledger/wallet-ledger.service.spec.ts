@@ -6,7 +6,13 @@ describe('WalletLedgerService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [WalletLedgerService],
+      providers: [
+        WalletLedgerService,
+        {
+          provide: 'WalletLedgerRepository',
+          useValue: {},
+        },
+      ],
     }).compile();
 
     service = module.get<WalletLedgerService>(WalletLedgerService);

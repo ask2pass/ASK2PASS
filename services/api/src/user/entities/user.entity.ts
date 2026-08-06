@@ -36,7 +36,7 @@ export class User extends BaseEntity {
   @Column({
     type: 'enum',
     enum: AccountStatus,
-    default: AccountStatus.PENDING,
+    default: AccountStatus.ACTIVE,
   })
   status!: AccountStatus;
 
@@ -51,4 +51,13 @@ export class User extends BaseEntity {
 
   @Column({ default: false })
   emailVerified!: boolean;
+
+  @Column({ default: false })
+  phoneVerified!: boolean;
+
+  @Column({ type: 'timestamptz' })
+  trialStartedAt!: Date;
+
+  @Column({ type: 'timestamptz' })
+  trialExpiresAt!: Date;
 }
