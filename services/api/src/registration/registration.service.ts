@@ -45,7 +45,9 @@ export class RegistrationService {
       residentialAddress: dto.residentialAddress,
       passwordHash: await this.authService.hashPassword(dto.password),
       role: UserRole.STUDENT,
-      status: AccountStatus.PENDING,
+      status: AccountStatus.ACTIVE,
+      trialStartedAt: new Date(),
+      trialExpiresAt: new Date(Date.now() + 168 * 60 * 60 * 1000),
     });
 
     const savedUser = await repository.save(user);

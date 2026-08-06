@@ -16,7 +16,7 @@ export class Wallet extends BaseEntity {
 
   @Column({
     type: 'integer',
-    default: 0,
+    default: 10,
   })
   balance!: number;
 
