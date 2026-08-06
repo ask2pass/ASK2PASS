@@ -23,6 +23,7 @@ import { MembershipModule } from './membership/membership.module';
 import { PaymentModule } from './payment/payment.module';
 import { LicensingModule } from './licensing/licensing.module';
 import { LearnerProfileModule } from './learner-profile/learner-profile.module';
+import { CurriculumModule } from './curriculum/curriculum.module';
 
 @Module({
   imports: [
@@ -85,6 +86,8 @@ import { LearnerProfileModule } from './learner-profile/learner-profile.module';
     LicensingModule,
 
     LearnerProfileModule,
+
+    CurriculumModule,
   ],
   controllers: [AppController],
   providers: [AppService],
