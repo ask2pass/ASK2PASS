@@ -1,5 +1,4 @@
 import { Column, Entity } from 'typeorm';
-
 import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity('subscription_plans')
@@ -21,6 +20,7 @@ export class SubscriptionPlan extends BaseEntity {
 
   @Column({
     type: 'integer',
+    default: 10,
   })
   defaultCoins!: number;
 
@@ -28,4 +28,9 @@ export class SubscriptionPlan extends BaseEntity {
     default: true,
   })
   active!: boolean;
+
+  @Column({
+    default: 'STUDENT',
+  })
+  audienceType!: string;
 }
