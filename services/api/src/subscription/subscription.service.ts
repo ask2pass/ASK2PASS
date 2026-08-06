@@ -5,13 +5,13 @@ import { Repository } from 'typeorm';
 import { Subscription } from './entities/subscription.entity';
 import { SubscriptionPlan } from './entities/subscription-plan.entity';
 import { User } from '../user/entities/user.entity';
+import { SubscriptionActivationSummary } from './interfaces/subscription-activation-summary.interface';
 
 @Injectable()
 export class SubscriptionService {
   constructor(
     @InjectRepository(Subscription)
     private readonly subscriptionRepository: Repository<Subscription>,
-
     @InjectRepository(SubscriptionPlan)
     private readonly subscriptionPlanRepository: Repository<SubscriptionPlan>,
   ) {}
@@ -19,7 +19,7 @@ export class SubscriptionService {
   async activateSubscription(
     user: User,
     planId: string,
-  ): Promise<Subscription> {
+  ): Promise<SubscriptionActivationSummary> {
     const plan = await this.subscriptionPlanRepository.findOne({
       where: { id: planId },
     });
@@ -43,6 +43,12 @@ export class SubscriptionService {
       renewalCount: 0,
     });
 
-    return this.subscriptionRepository.save(subscription);
+    const saved = await this.subscriptionRepository.save(subscription);
+
+    return {
+      subscriptionId: saved.id,
+      active: saved.active,
+      accessExpiresAt: saved.accessExpiresAt,
+    };
   }
 }

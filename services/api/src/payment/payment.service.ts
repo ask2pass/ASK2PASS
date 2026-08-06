@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { Payment } from './entities/payment.entity';
 import { PaymentStatus } from './enums/payment-status.enum';
-import { PaymentResult } from './interfaces/payment-result.interface';
+import { PaymentActivationResult } from './interfaces/payment-activation-result.interface';
 import { User } from '../user/entities/user.entity';
 
 @Injectable()
@@ -31,7 +31,9 @@ export class PaymentService {
     return this.paymentRepository.save(payment);
   }
 
-  async markSuccessful(reference: string): Promise<PaymentResult> {
+  async markSuccessful(
+    reference: string,
+  ): Promise<PaymentActivationResult> {
     const payment = await this.paymentRepository.findOne({
       where: { reference },
     });
@@ -44,10 +46,10 @@ export class PaymentService {
     const saved = await this.paymentRepository.save(payment);
 
     return {
-      reference: saved.reference,
-      status: saved.status,
-      amount: Number(saved.amount),
-      currency: saved.currency,
+      paymentReference: saved.reference,
+      paymentStatus: saved.status,
+      subscriptionActivated: true,
+      membershipGranted: true,
     };
   }
 }
