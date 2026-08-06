@@ -12,14 +12,11 @@ export class WalletService {
     private readonly walletRepository: Repository<Wallet>,
   ) {}
 
-  getRepository(): Repository<Wallet> {
-    return this.walletRepository;
-  }
-
   async createWallet(user: User): Promise<Wallet> {
     const wallet = this.walletRepository.create({
       user,
       balance: 0,
+      totalCoins: 0,
       active: true,
     });
 
