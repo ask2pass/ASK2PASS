@@ -1,5 +1,6 @@
 import { Controller, Param, Post } from '@nestjs/common';
 import { LicensingService } from './licensing.service';
+import { LicenseType } from './enums/license-type.enum';
 
 @Controller('licensing')
 export class LicensingController {
@@ -9,13 +10,13 @@ export class LicensingController {
 
   @Post(':type/:ownerId')
   async createLicense(
-    @Param('type') type: string,
+    @Param('type') type: LicenseType,
     @Param('ownerId') ownerId: string,
   ) {
     return {
-      message: 'License creation endpoint scaffolded',
+      message: 'Licensing service integration ready',
       ownerId,
-      type,
+      licenseType: type,
     };
   }
 }

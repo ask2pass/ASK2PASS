@@ -11,9 +11,6 @@ export class PaymentController {
   async markSuccessful(
     @Param('reference') reference: string,
   ) {
-    return {
-      message: 'Payment success endpoint scaffolded',
-      reference,
-    };
+    return this.paymentService.markSuccessful(reference);
   }
 }
