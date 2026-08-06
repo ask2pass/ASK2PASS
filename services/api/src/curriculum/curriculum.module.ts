@@ -1,9 +1,18 @@
 import { Module } from '@nestjs/common';
-import { CurriculumService } from './curriculum.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { Curriculum } from './entities/curriculum.entity';
 import { CurriculumController } from './curriculum.controller';
+import { CurriculumService } from './curriculum.service';
 
 @Module({
+  imports: [
+    TypeOrmModule.forFeature([
+      Curriculum,
+    ]),
+  ],
+  controllers: [CurriculumController],
   providers: [CurriculumService],
-  controllers: [CurriculumController]
+  exports: [CurriculumService],
 })
 export class CurriculumModule {}
