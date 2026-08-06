@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 
 import { WalletLedger } from './entities/wallet-ledger.entity';
 import { Wallet } from '../wallet/entities/wallet.entity';
+import { WalletLedgerEntry } from './interfaces/wallet-ledger-entry.interface';
 import { WalletTransactionType } from '../common/enums/wallet-transaction-type.enum';
 import { WalletTransactionSource } from '../common/enums/wallet-transaction-source.enum';
 
@@ -14,11 +15,7 @@ export class WalletLedgerService {
     private readonly walletLedgerRepository: Repository<WalletLedger>,
   ) {}
 
-  getRepository(): Repository<WalletLedger> {
-    return this.walletLedgerRepository;
-  }
-
-  async createInitialEntry(wallet: Wallet): Promise<WalletLedger> {
+  async createInitialEntry(wallet: Wallet): Promise<WalletLedgerEntry> {
     const ledger = this.walletLedgerRepository.create({
       wallet,
       reference: `REG-${Date.now()}`,
@@ -29,6 +26,14 @@ export class WalletLedgerService {
       description: 'Initial wallet creation',
     });
 
-    return this.walletLedgerRepository.save(ledger);
+    const saved = await this.walletLedgerRepository.save(ledger);
+
+    return {
+      id: saved.id,
+      transactionId: saved.id,
+      walletId: wallet.id,
+      coins: 0,
+      balanceAfter: Number(saved.balanceAfter),
+    };
   }
 }
