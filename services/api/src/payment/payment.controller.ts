@@ -1,4 +1,19 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Param, Post } from '@nestjs/common';
+import { PaymentService } from './payment.service';
 
-@Controller('payment')
-export class PaymentController {}
+@Controller('payments')
+export class PaymentController {
+  constructor(
+    private readonly paymentService: PaymentService,
+  ) {}
+
+  @Post(':reference/success')
+  async markSuccessful(
+    @Param('reference') reference: string,
+  ) {
+    return {
+      message: 'Payment success endpoint scaffolded',
+      reference,
+    };
+  }
+}
