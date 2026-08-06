@@ -6,9 +6,11 @@ import { WalletLedgerController } from './wallet-ledger.controller';
 import { WalletLedgerService } from './wallet-ledger.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([WalletLedger])],
+  imports: [
+    TypeOrmModule.forFeature([WalletLedger]),
+  ],
   controllers: [WalletLedgerController],
   providers: [WalletLedgerService],
-  exports: [WalletLedgerService, TypeOrmModule],
+  exports: [WalletLedgerService],
 })
 export class WalletLedgerModule {}

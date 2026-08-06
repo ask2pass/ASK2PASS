@@ -1,22 +1,15 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-} from 'typeorm';
-
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../common/entities/base.entity';
-import { WalletTransactionSource } from '../../common/enums/wallet-transaction-source.enum';
-import { WalletTransactionType } from '../../common/enums/wallet-transaction-type.enum';
 import { Wallet } from '../../wallet/entities/wallet.entity';
+import { WalletTransactionType } from '../../common/enums/wallet-transaction-type.enum';
+import { WalletTransactionSource } from '../../common/enums/wallet-transaction-source.enum';
 
 @Entity('wallet_ledger')
 export class WalletLedger extends BaseEntity {
   @ManyToOne(() => Wallet, { nullable: false })
-  @JoinColumn()
   wallet!: Wallet;
 
-  @Column({ unique: true })
+  @Column()
   reference!: string;
 
   @Column({
@@ -32,17 +25,20 @@ export class WalletLedger extends BaseEntity {
   transactionSource!: WalletTransactionSource;
 
   @Column({
-    type: 'integer',
+    type: 'decimal',
+    precision: 12,
+    scale: 2,
+    default: 0,
   })
   amount!: number;
 
   @Column({
-    type: 'integer',
+    type: 'decimal',
+    precision: 12,
+    scale: 2,
   })
   balanceAfter!: number;
 
-  @Column({
-    nullable: true,
-  })
-  description?: string;
+  @Column()
+  description!: string;
 }
