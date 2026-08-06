@@ -19,6 +19,7 @@ import { DatabaseModule } from './database/database.module';
 import { CommonModule } from './common/common.module';
 import { OnboardingModule } from './onboarding/onboarding.module';
 import { VerificationModule } from './verification/verification.module';
+import { MembershipModule } from './membership/membership.module';
 
 @Module({
   imports: [
@@ -73,6 +74,8 @@ import { VerificationModule } from './verification/verification.module';
     OnboardingModule,
 
     VerificationModule,
+
+    MembershipModule,
   ],
   controllers: [AppController],
   providers: [AppService],
