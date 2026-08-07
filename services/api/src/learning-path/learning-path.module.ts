@@ -7,9 +7,11 @@ import { LearningPathService } from './learning-path.service';
 import { LearningPath } from './entities/learning-path.entity';
 import { DailySubjectChart } from './entities/daily-subject-chart.entity';
 import { LearningSession } from './entities/learning-session.entity';
+import { LearningRuntimeModule } from './runtime/learning-runtime.module';
 
 @Module({
   imports: [
+    LearningRuntimeModule,
     TypeOrmModule.forFeature([
       LearningPath,
       DailySubjectChart,
