@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AwardsEngineModule } from './awards-engine/awards-engine.module';
 import { CurriculumContentModule } from './curriculum-content/curriculum-content.module';
 import { AssessmentEngineModule } from './assessment-engine/assessment-engine.module';
 import { CurriculumControlModule } from './curriculum-control/curriculum-control.module';
@@ -31,6 +32,7 @@ import { LearningPathModule } from './learning-path/learning-path.module';
 
 @Module({
   imports: [
+AwardsEngineModule,
 CurriculumContentModule,
 AssessmentEngineModule,
 CurriculumControlModule,
@@ -42,6 +44,7 @@ CurriculumControlModule,
 
     TypeOrmModule.forRootAsync({
       imports: [
+AwardsEngineModule,
 CurriculumContentModule,
 AssessmentEngineModule,
 CurriculumControlModule,ConfigModule],
