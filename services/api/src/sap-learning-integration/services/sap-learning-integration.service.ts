@@ -98,7 +98,7 @@ export class SAPLearningIntegrationService {
     return this.enforceBinding(sap, current.learning);
   }
 
-  recordAssessment(data: any) {
+  async recordAssessment(data: any) {
     const current = this.enforceBinding(
       data.context.sap,
       data.context.learning,
@@ -108,7 +108,7 @@ export class SAPLearningIntegrationService {
       return current;
     }
 
-    const recorded = this.sap.recordAssessment(
+    const recorded = await this.sap.recordAssessment(
       current.sap,
       data.score,
       data.maxScore,
