@@ -16,14 +16,43 @@ export const AWARDS_CONSTANTS = {
     'A_LEVEL',
   ],
 
-  TOP_RANKERS: 5,
+  TOP_RANKERS: 10,
+
+  LEADERBOARD_SCOPE: 'PER_CLASS_LEVEL',
+  LEADERBOARD_CLASS_LEVELS: [
+    'PRIMARY_1',
+    'PRIMARY_2',
+    'PRIMARY_3',
+    'PRIMARY_4',
+    'PRIMARY_5',
+    'PRIMARY_6',
+    'JSS1',
+    'JSS2',
+    'JSS3',
+    'SSS1',
+    'SSS2',
+    'SSS3',
+  ],
 
   PRIMARY_AWARDS: {
     FIRST: 100000,
     SECOND: 50000,
     THIRD: 25000,
-    FOURTH: 15000,
-    FIFTH: 15000,
+    FOURTH_TO_TENTH: 15000,
+  },
+
+  JSS_AWARDS: {
+    FIRST: 200000,
+    SECOND: 100000,
+    THIRD: 50000,
+    FOURTH_TO_TENTH: 25000,
+  },
+
+  SSS_AWARDS: {
+    FIRST: 500000,
+    SECOND: 250000,
+    THIRD: 125000,
+    FOURTH_TO_TENTH: 30000,
   },
 
   STAR_SOURCES: [

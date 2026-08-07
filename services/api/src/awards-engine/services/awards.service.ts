@@ -25,7 +25,11 @@ AWARDS_CONSTANTS.STAR_SOURCES,
 
 getPrimaryAwardStructure(){
 
-return AWARDS_CONSTANTS.PRIMARY_AWARDS;
+return {
+      primary: AWARDS_CONSTANTS.PRIMARY_AWARDS,
+      jss: AWARDS_CONSTANTS.JSS_AWARDS,
+      sss: AWARDS_CONSTANTS.SSS_AWARDS,
+    };
 
 }
 
