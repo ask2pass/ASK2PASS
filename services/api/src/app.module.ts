@@ -24,6 +24,7 @@ import { PaymentModule } from './payment/payment.module';
 import { LicensingModule } from './licensing/licensing.module';
 import { LearnerProfileModule } from './learner-profile/learner-profile.module';
 import { CurriculumModule } from './curriculum/curriculum.module';
+import { LearningPathModule } from './learning-path/learning-path.module';
 
 @Module({
   imports: [
@@ -88,6 +89,8 @@ import { CurriculumModule } from './curriculum/curriculum.module';
     LearnerProfileModule,
 
     CurriculumModule,
+
+    LearningPathModule,
   ],
   controllers: [AppController],
   providers: [AppService],

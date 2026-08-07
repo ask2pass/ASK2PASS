@@ -1,0 +1,6 @@
+export enum EngagementStatus {
+  RESPONSIVE = 'RESPONSIVE',
+  MISSED = 'MISSED',
+  FOLLOW_UP = 'FOLLOW_UP',
+  AUTO_LOGGED_OUT = 'AUTO_LOGGED_OUT',
+}
