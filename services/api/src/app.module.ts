@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { LearningPersistenceModule } from './learning-persistence/learning-persistence.module';
 import { LearningSessionModule } from './learning-session/learning-session.module';
 import { LearningOrchestrationModule } from './learning-orchestration/learning-orchestration.module';
 import { LearningIntegrationModule } from './learning-integration/learning-integration.module';
@@ -36,6 +37,7 @@ import { LearningPathModule } from './learning-path/learning-path.module';
 
 @Module({
   imports: [
+LearningPersistenceModule,
 LearningSessionModule,
 LearningOrchestrationModule,
 LearningIntegrationModule,
@@ -52,6 +54,7 @@ CurriculumControlModule,
 
     TypeOrmModule.forRootAsync({
       imports: [
+LearningPersistenceModule,
 LearningSessionModule,
 LearningOrchestrationModule,
 LearningIntegrationModule,

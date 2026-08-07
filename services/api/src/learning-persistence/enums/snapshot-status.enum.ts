@@ -1,0 +1,6 @@
+export enum SnapshotStatus {
+  ACTIVE = 'ACTIVE',
+  SYNC_PENDING = 'SYNC_PENDING',
+  SYNCED = 'SYNCED',
+  SUPERSEDED = 'SUPERSEDED',
+}
