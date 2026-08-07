@@ -24,6 +24,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { WalletModule } from './wallet/wallet.module';
+import { CoinEconomyModule } from './coin-economy/coin-economy.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { WalletLedgerModule } from './wallet-ledger/wallet-ledger.module';
 import { RegistrationModule } from './registration/registration.module';
@@ -105,6 +106,7 @@ CurriculumControlModule,ConfigModule],
     AuthModule,
 
     WalletModule,
+    CoinEconomyModule,
 
     SubscriptionModule,
 

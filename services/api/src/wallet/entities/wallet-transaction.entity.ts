@@ -19,6 +19,9 @@ export class WalletTransaction extends BaseEntity {
   })
   coins!: number;
 
+  @Column({ nullable: true })
+  reference?: string;
+
   @Column()
   description!: string;
 }
