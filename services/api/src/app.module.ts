@@ -94,6 +94,8 @@ CurriculumControlModule,ConfigModule],
           synchronize: config.getOrThrow<boolean>('database.synchronize'),
           logging: config.getOrThrow<boolean>('database.logging'),
           autoLoadEntities: true,
+          migrations: [__dirname + '/database/migrations/*{.js,.ts}'],
+          migrationsRun: true,
         };
       },
     }),
