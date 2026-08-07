@@ -218,15 +218,16 @@ export class SAPService {
     };
   }
 
-  recordAssessment(
+  async recordAssessment(
     context: SAPContext,
     score: number,
     maxScore: number = SAP_CONSTANTS.MAX_ASSESSMENT_SCORE,
     type: AssessmentType = AssessmentType.FORMATIVE,
-  ): {
+  )
+  : Promise<{
     context: SAPContext;
     assessment: SAPAssessment;
-  } {
+  }> {
     const safeMax =
       Math.max(
         1,
@@ -302,7 +303,7 @@ export class SAPService {
         now,
     };
 
-    void this.assessmentRepository.create({
+    await this.assessmentRepository.create({
       learnerId: assessment.learnerId,
       sessionId: assessment.sessionId,
       lessonId: assessment.lessonId,
@@ -319,7 +320,7 @@ export class SAPService {
     });
 
     const nextContext =
-      this.applyAssessment(
+      await this.applyAssessment(
         context,
         percentage,
         type,
@@ -474,11 +475,11 @@ export class SAPService {
     );
   }
 
-  private applyAssessment(
+  private async applyAssessment(
     context: SAPContext,
     percentage: number,
     type: AssessmentType,
-  ): SAPContext {
+  ): Promise<SAPContext> {
     const previousScore =
       context.latestScore;
 
@@ -546,7 +547,7 @@ export class SAPService {
         SAPState.PROGRESS_TRACKING;
     }
 
-    void this.profileRepository.save({
+    await this.profileRepository.save({
       learnerId: context.learnerId,
       classLevel: context.classLevel,
       subject: context.subject,
