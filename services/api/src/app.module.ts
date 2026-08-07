@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { CurriculumControlModule } from './curriculum-control/curriculum-control.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -28,6 +29,7 @@ import { LearningPathModule } from './learning-path/learning-path.module';
 
 @Module({
   imports: [
+CurriculumControlModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -35,7 +37,8 @@ import { LearningPathModule } from './learning-path/learning-path.module';
     }),
 
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [
+CurriculumControlModule,ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         return {
