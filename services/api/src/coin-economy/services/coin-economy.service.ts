@@ -59,9 +59,8 @@ export class CoinEconomyService {
         const existingTransaction = await transactionRepository.findOne({
           where: {
             wallet: { id: walletId },
-            description,
+            reference,
           },
-          order: { createdAt: 'DESC' },
         });
 
         return {
@@ -111,6 +110,7 @@ export class CoinEconomyService {
               ? WalletTransactionType.DEBIT
               : WalletTransactionType.CREDIT,
         coins,
+        reference,
         description,
       });
 
