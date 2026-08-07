@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { SAPModule } from './sap/sap.module';
 import { LearningEngineModule } from './learning-engine/learning-engine.module';
 import { LearningCrossBindingModule } from './learning-cross-binding/learning-cross-binding.module';
 import { LearningGatewayModule } from './learning-gateway/learning-gateway.module';
@@ -41,6 +42,7 @@ import { LearningPathModule } from './learning-path/learning-path.module';
 
 @Module({
   imports: [
+SAPModule,
 LearningEngineModule,
 LearningCrossBindingModule,
 LearningGatewayModule,
@@ -62,6 +64,7 @@ CurriculumControlModule,
 
     TypeOrmModule.forRootAsync({
       imports: [
+SAPModule,
 LearningEngineModule,
 LearningCrossBindingModule,
 LearningGatewayModule,

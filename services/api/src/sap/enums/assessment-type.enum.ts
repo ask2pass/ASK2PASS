@@ -1,0 +1,8 @@
+export enum AssessmentType {
+  BASELINE = 'BASELINE',
+  DIAGNOSTIC = 'DIAGNOSTIC',
+  FORMATIVE = 'FORMATIVE',
+  CBT = 'CBT',
+  PROGRESS = 'PROGRESS',
+  MASTERY = 'MASTERY',
+}
