@@ -63,14 +63,49 @@ export class CoinEconomyService {
           },
         });
 
+        const expectedSignedCoins =
+          movementType === CoinMovementType.DEBIT ? -coins : coins;
+
+        const existingSignedCoins =
+          existingTransaction?.type === WalletTransactionType.DEBIT
+            ? -Number(existingTransaction.coins)
+            : Number(existingTransaction?.coins ?? 0);
+
+        if (
+          existingTransaction &&
+          existingSignedCoins !== expectedSignedCoins
+        ) {
+          throw new ConflictException(
+            'Transaction reference already exists with different transaction semantics.',
+          );
+        }
+
+        const expectedLedgerType =
+          movementType === CoinMovementType.REFUND
+            ? LedgerTransactionType.MANUAL_ADJUSTMENT_CREDIT
+            : movementType === CoinMovementType.DEBIT
+              ? LedgerTransactionType.LEARNING_CONSUMPTION
+              : LedgerTransactionType.SUBSCRIPTION_ALLOCATION;
+
+        if (existing.transactionType !== expectedLedgerType) {
+          throw new ConflictException(
+            'Transaction reference already exists with a different movement type.',
+          );
+        }
+
+        const expectedAmount = coins * COIN_VALUE_NGN;
+
+        if (Number(existing.amount) !== expectedAmount) {
+          throw new ConflictException(
+            'Transaction reference already exists with a different coin value.',
+          );
+        }
+
         return {
           transactionId: existingTransaction?.id ?? existing.id,
           ledgerId: existing.id,
           walletId,
-          coins:
-            movementType === CoinMovementType.DEBIT
-              ? -coins
-              : coins,
+          coins: existingSignedCoins,
           balanceAfter: Number(existing.balanceAfter),
           idempotent: true,
         };
