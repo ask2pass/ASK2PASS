@@ -12,6 +12,7 @@ export const CONTENT_CONSTANTS = {
     'SSS1',
     'SSS2',
     'SSS3',
+    'A_LEVEL',
   ],
 
   TERMS_PER_SESSION: 3,
