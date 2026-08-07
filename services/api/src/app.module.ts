@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AssessmentEngineModule } from './assessment-engine/assessment-engine.module';
 import { CurriculumControlModule } from './curriculum-control/curriculum-control.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -29,6 +30,7 @@ import { LearningPathModule } from './learning-path/learning-path.module';
 
 @Module({
   imports: [
+AssessmentEngineModule,
 CurriculumControlModule,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -38,6 +40,7 @@ CurriculumControlModule,
 
     TypeOrmModule.forRootAsync({
       imports: [
+AssessmentEngineModule,
 CurriculumControlModule,ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
