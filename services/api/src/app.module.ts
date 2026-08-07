@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { LearningCrossBindingModule } from './learning-cross-binding/learning-cross-binding.module';
 import { LearningGatewayModule } from './learning-gateway/learning-gateway.module';
 import { LearningRuntimeModule } from './learning-runtime/learning-runtime.module';
 import { LearningPersistenceModule } from './learning-persistence/learning-persistence.module';
@@ -39,6 +40,7 @@ import { LearningPathModule } from './learning-path/learning-path.module';
 
 @Module({
   imports: [
+LearningCrossBindingModule,
 LearningGatewayModule,
 LearningRuntimeModule,
 LearningPersistenceModule,
@@ -58,6 +60,7 @@ CurriculumControlModule,
 
     TypeOrmModule.forRootAsync({
       imports: [
+LearningCrossBindingModule,
 LearningGatewayModule,
 LearningRuntimeModule,
 LearningPersistenceModule,
