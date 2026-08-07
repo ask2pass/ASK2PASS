@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
 } from '@nestjs/common';
 
@@ -61,7 +62,7 @@ export class SAPController {
 
   @Get('profile/:learnerId')
   profile(
-    @Body('learnerId') learnerId: string,
+    @Param('learnerId') learnerId: string,
   ) {
     return this.service.getProfile(
       learnerId,
