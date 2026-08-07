@@ -1,0 +1,8 @@
+export enum LessonState {
+  PLAY = 'PLAY',
+  PAUSE = 'PAUSE',
+  QUESTION_MODE = 'QUESTION_MODE',
+  REVISION_MODE = 'REVISION_MODE',
+  CBT_MODE = 'CBT_MODE',
+  COMPLETED = 'COMPLETED',
+}
