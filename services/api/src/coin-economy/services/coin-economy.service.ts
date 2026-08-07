@@ -57,7 +57,11 @@ export class CoinEconomyService {
         }
 
         const existingTransaction = await transactionRepository.findOne({
-          where: { id: existing.id },
+          where: {
+            wallet: { id: walletId },
+            description,
+          },
+          order: { createdAt: 'DESC' },
         });
 
         return {
@@ -75,6 +79,7 @@ export class CoinEconomyService {
 
       const wallet = await walletRepository.findOne({
         where: { id: walletId },
+        lock: { mode: 'pessimistic_write' },
       });
 
       if (!wallet) {
