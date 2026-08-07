@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { SAPAssessmentRepository } from '../repositories/sap-assessment.repository';
+import { SAPLearningProfileRepository } from '../repositories/sap-learning-profile.repository';
 
 import { SAP_CONSTANTS } from '../constants/sap.constants';
 
@@ -10,15 +12,16 @@ import { SAPState } from '../enums/sap-state.enum';
 import { SAPAssessment } from '../interfaces/sap-assessment.interface';
 import { SAPContext } from '../interfaces/sap-context.interface';
 import { SAPLearningProfile } from '../interfaces/sap-profile.interface';
+import { SAPLearningProfileEntity } from '../entities/sap-learning-profile.entity';
+import { SAPAssessmentEntity } from '../entities/sap-assessment.entity';
 import { SAPResult } from '../interfaces/sap-result.interface';
 
 @Injectable()
 export class SAPService {
-  private readonly assessments =
-    new Map<string, SAPAssessment[]>();
-
-  private readonly profiles =
-    new Map<string, SAPLearningProfile>();
+  constructor(
+    private readonly assessmentRepository: SAPAssessmentRepository,
+    private readonly profileRepository: SAPLearningProfileRepository,
+  ) {}
 
   getPolicy() {
     return {
@@ -299,19 +302,21 @@ export class SAPService {
         now,
     };
 
-    const existing =
-      this.assessments.get(
-        context.learnerId,
-      ) ?? [];
-
-    existing.push(
-      assessment,
-    );
-
-    this.assessments.set(
-      context.learnerId,
-      existing,
-    );
+    void this.assessmentRepository.create({
+      learnerId: assessment.learnerId,
+      sessionId: assessment.sessionId,
+      lessonId: assessment.lessonId,
+      classLevel: assessment.classLevel,
+      subject: assessment.subject,
+      topic: assessment.topic,
+      assessmentType: assessment.assessmentType,
+      score: assessment.score,
+      maxScore: assessment.maxScore,
+      percentage: assessment.percentage,
+      completed: assessment.completed,
+      offline: assessment.offline,
+      syncStatus: assessment.syncStatus,
+    });
 
     const nextContext =
       this.applyAssessment(
@@ -342,26 +347,28 @@ export class SAPService {
     };
   }
 
-  getProfile(
+  async getProfile(
     learnerId: string,
-  ): SAPLearningProfile | null {
-    return (
-      this.profiles.get(
-        learnerId,
-      ) ?? null
+    subject?: string,
+    topic?: string,
+  ): Promise<SAPLearningProfileEntity | null> {
+    if (!subject || !topic) {
+      return null;
+    }
+
+    return this.profileRepository.find(
+      learnerId,
+      subject,
+      topic,
     );
   }
 
-  getAssessments(
+  async getAssessments(
     learnerId: string,
-  ): SAPAssessment[] {
-    return [
-      ...(
-        this.assessments.get(
-          learnerId,
-        ) ?? []
-      ),
-    ];
+  ): Promise<SAPAssessmentEntity[]> {
+    return this.assessmentRepository.findByLearner(
+      learnerId,
+    );
   }
 
   evaluateMastery(
@@ -458,33 +465,13 @@ export class SAPService {
     };
   }
 
-  markSynced(
+  async markSynced(
     learnerId: string,
     assessmentId: string,
-  ): SAPAssessment | null {
-    const existing =
-      this.assessments.get(
-        learnerId,
-      ) ?? [];
-
-    const assessment =
-      existing.find(
-        (item) =>
-          item.assessmentId ===
-          assessmentId,
-      );
-
-    if (!assessment) {
-      return null;
-    }
-
-    assessment.syncStatus =
-      AssessmentSyncStatus.SYNCED;
-
-    assessment.updatedAt =
-      new Date();
-
-    return assessment;
+  ): Promise<SAPAssessmentEntity | null> {
+    return this.assessmentRepository.markSynced(
+      assessmentId,
+    );
   }
 
   private applyAssessment(
@@ -559,50 +546,21 @@ export class SAPService {
         SAPState.PROGRESS_TRACKING;
     }
 
-    this.profiles.set(
-      context.learnerId,
-      {
-        learnerId:
-          context.learnerId,
-
-        classLevel:
-          context.classLevel,
-
-        subject:
-          context.subject,
-
-        topic:
-          context.topic,
-
-        baselineScore,
-
-        latestScore:
-          percentage,
-
-        masteryScore,
-
-        masteryStatus:
-          this.resolveMasteryStatus(
-            masteryScore,
-          ),
-
-        competencyLevel,
-
-        learningGapScore,
-
-        interventionRequired:
-          nextContext.interventionRequired,
-
-        personalizedPathRequired:
-          nextContext.personalizedPathRequired,
-
-        assessmentCount:
-          nextContext.assessmentCount,
-
-        updatedAt:
-          nextContext.updatedAt,
-      },
-    );
+    void this.profileRepository.save({
+      learnerId: context.learnerId,
+      classLevel: context.classLevel,
+      subject: context.subject,
+      topic: context.topic,
+      baselineScore,
+      latestScore: percentage,
+      masteryScore,
+      masteryStatus: this.resolveMasteryStatus(masteryScore),
+      competencyLevel,
+      learningGapScore,
+      interventionRequired: nextContext.interventionRequired,
+      personalizedPathRequired: nextContext.personalizedPathRequired,
+      assessmentCount: nextContext.assessmentCount,
+    });
 
     return nextContext;
   }
