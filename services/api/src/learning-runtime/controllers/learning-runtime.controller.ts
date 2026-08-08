@@ -15,6 +15,8 @@ import { LearningSessionTransitionDto } from '../dto/learning-session-transition
 import { LearningSessionLifecycleDto } from '../dto/learning-session-lifecycle.dto';
 import { LearningSessionAatInteractionDto } from '../dto/learning-session-aat-interaction.dto';
 import { LearningSessionContinuityDto } from '../dto/learning-session-continuity.dto';
+import { LearningSessionCycleDto } from '../dto/learning-session-cycle.dto';
+import { AatAcademicPowerCbtDto } from '../dto/aat-academic-power-cbt.dto';
 import { LearningSessionService } from '../services/learning-session.service';
 
 @Controller('learning-runtime')
@@ -35,6 +37,80 @@ export class LearningRuntimeController {
       request.subject,
       request.module,
       'LESSON',
+    );
+  }
+
+  @Post('academic-power-cbt')
+  academicPowerCbt(@Body() request: AatAcademicPowerCbtDto) {
+    return this.sessionService.getAcademicPowerCbtContract(
+      request.learnerId,
+      request.sessionId,
+      request.subject,
+      request.module,
+      request.lessonContext,
+    );
+  }
+
+  @Post('academic-power-cbt/question')
+  academicPowerCbtQuestion(
+    @Body()
+    request: {
+      questionNumber: number;
+      lessonContext: string;
+      dimension: string;
+    },
+  ) {
+    return this.sessionService.getAcademicPowerCbtQuestionContract(
+      request.questionNumber,
+      request.lessonContext,
+      request.dimension,
+    );
+  }
+
+  @Post('academic-power-cbt/ptdm-continuation')
+  academicPowerCbtPtdmContinuation(
+    @Body()
+    request: {
+      learnerId: string;
+      sessionId: string;
+      subject: string;
+      module: string;
+      lessonContext: string;
+      questionNumber: number;
+      outcome: string;
+    },
+  ) {
+    return this.sessionService.getPtdmContinuationFromCbt(
+      request.learnerId,
+      request.sessionId,
+      request.subject,
+      request.module,
+      request.lessonContext,
+      request.questionNumber,
+      request.outcome,
+    );
+  }
+
+  @Post('learning-cycle')
+  learningCycle(@Body() request: LearningSessionCycleDto) {
+    return this.sessionService.getFortyMinuteLearningCycle(
+      request.learnerId,
+      request.sessionId,
+      request.subject,
+      request.module,
+      request.lessonContext,
+    );
+  }
+
+  @Post('learning-cycle/stage')
+  learningCycleStage(@Body() request: { stage: string }) {
+    return this.sessionService.getLearningCycleStage(request.stage);
+  }
+
+  @Post('learning-cycle/cbt-validation')
+  validateCbtQuestionCount(@Body() request: { questionCount: number }) {
+    return this.sessionService.validateCbtQuestionCount(
+      request.questionCount,
     );
   }
 
