@@ -6,9 +6,18 @@ import {
 } from '@nestjs/common';
 
 import { LearningRuntimeService } from '../services/learning-runtime.service';
+import { LearningSessionConsumptionDto } from '../dto/learning-session-consumption.dto';
 
 @Controller('learning-runtime')
 export class LearningRuntimeController {
+
+  @Post('consume-coins')
+  async consumeLearningCoins(
+    @Body() request: LearningSessionConsumptionDto,
+  ) {
+    return this.service.consumeLearningCoins(request);
+  }
+
 
   constructor(
     private readonly service: LearningRuntimeService,
