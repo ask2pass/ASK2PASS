@@ -1,3 +1,4 @@
+import { LearningSessionAcademicPowerService } from '../services/learning-session-academic-power.service';
 import {
   Body,
   Controller,
@@ -37,6 +38,65 @@ export class LearningRuntimeController {
       request.subject,
       request.module,
       'LESSON',
+    );
+  }
+
+  @Post('academic-power-assessment/contract')
+  academicPowerAssessmentContract(
+    @Body()
+    request: {
+      learnerId: string;
+      sessionId: string;
+      subject: string;
+      module: string;
+      lessonContext: string;
+    },
+  ) {
+    return this.academicPowerService.getUniversalAssessmentContract(
+      request.learnerId,
+      request.sessionId,
+      request.subject,
+      request.module,
+      request.lessonContext,
+    );
+  }
+
+  @Post('academic-power-assessment/validate')
+  validateAcademicPowerAssessment(
+    @Body() request: import('../dto/aat-academic-power-assessment.dto').AatAcademicPowerAssessmentDto,
+  ) {
+    return this.academicPowerService.validateAssessment(request);
+  }
+
+  @Post('academic-power-assessment/assess')
+  assessAcademicPower(
+    @Body()
+    request: {
+      assessment: import('../dto/aat-academic-power-assessment.dto').AatAcademicPowerAssessmentDto;
+      answers: import('../dto/aat-academic-power-assessment.dto').AatAcademicPowerAnswerDto[];
+    },
+  ) {
+    return this.academicPowerService.assess(
+      request.assessment,
+      request.answers,
+    );
+  }
+
+  @Post('ptdm/mastery-contract')
+  getPtdmMasteryContract(
+    @Body()
+    request: {
+      learnerId: string;
+      subject?: string;
+      topic?: string;
+      lessonContext?: string;
+    },
+  ) {
+    return this.academicPowerService.getPtdmMasteryContract(
+      request.learnerId,
+      request.subject,
+      request.topic,
+      request.lessonContext,
     );
   }
 
@@ -247,7 +307,7 @@ export class LearningRuntimeController {
   constructor(
     private readonly service: LearningRuntimeService,
     private readonly sessionService: LearningSessionService,
-  ) {}
+    private readonly academicPowerService: LearningSessionAcademicPowerService) {}
 
   @Get('policy')
   policy() {

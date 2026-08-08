@@ -7,6 +7,7 @@ import { LearningRuntimeCoinService } from './services/learning-runtime-coin.ser
 import { LearningRuntimeController } from './controllers/learning-runtime.controller';
 
 import { LearningRuntimeService } from './services/learning-runtime.service';
+import { LearningSessionAcademicPowerService } from './services/learning-session-academic-power.service';
 
 @Module({
   imports: [CoinEconomyModule],
@@ -14,13 +15,16 @@ import { LearningRuntimeService } from './services/learning-runtime.service';
     LearningRuntimeController,
   ],
 
-  providers: [LearningSessionService,
+  providers: [
+    LearningSessionAcademicPowerService,
+LearningSessionService,
     LearningRuntimeService,
     LearningRuntimeCoinService,
   ],
 
   exports: [
-    LearningRuntimeService,
+    LearningSessionAcademicPowerService,
+LearningRuntimeService,
     LearningRuntimeCoinService,
   ],
 })

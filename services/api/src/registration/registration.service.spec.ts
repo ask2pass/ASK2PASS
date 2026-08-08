@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RegistrationService } from './registration.service';
+import { VerificationService } from '..//verification/verification.service';
 import { AuditService } from '../audit/audit.service';
 import { WalletLedgerService } from '../wallet-ledger/wallet-ledger.service';
 import { WalletService } from '../wallet/wallet.service';
@@ -13,6 +14,7 @@ describe('RegistrationService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
+        { provide: VerificationService, useValue: {} },
         RegistrationService,
         { provide: IdentityService, useValue: {} },
         { provide: UserService, useValue: {} },
