@@ -8,9 +8,18 @@ import {
 import { LearningRuntimeService } from '../services/learning-runtime.service';
 import { LearningSessionConsumptionDto } from '../dto/learning-session-consumption.dto';
 import { LearningSessionExecutionDto } from '../dto/learning-session-execution.dto';
+import { LearningSessionOrchestrationDto } from '../dto/learning-session-orchestration.dto';
 
 @Controller('learning-runtime')
 export class LearningRuntimeController {
+  @Post('orchestrate-session')
+  async orchestrateLearningSession(
+    @Body() request: LearningSessionOrchestrationDto,
+  ) {
+    return this.service.orchestrateLearningSession(request);
+  }
+
+
   @Post('execute-session')
   async executeLearningSession(
     @Body() request: LearningSessionExecutionDto,
