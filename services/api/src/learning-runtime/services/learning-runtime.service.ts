@@ -159,7 +159,14 @@ export class LearningRuntimeService {
   ): Promise<LearningRuntimeConsumptionResult> {
     const result = await this.learningRuntimeCoin.consume(request);
 
-    return result;
+    if (!result.authorized) {
+      return result;
+    }
+
+    return {
+      ...result,
+      reason: result.reason ?? 'LEARNING_SESSION_EXECUTED',
+    };
   }
 
   async consumeLearningCoins(
