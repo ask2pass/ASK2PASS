@@ -154,6 +154,21 @@ export class LearningRuntimeService {
     };
   }
 
+  async deliverLearningSession(
+    request: LearningRuntimeConsumptionRequest,
+  ): Promise<LearningRuntimeConsumptionResult> {
+    const orchestration = await this.orchestrateLearningSession(request);
+
+    if (!orchestration.authorized) {
+      return orchestration;
+    }
+
+    return {
+      ...orchestration,
+      reason: orchestration.reason ?? 'LEARNING_SESSION_DELIVERED',
+    };
+  }
+
   async orchestrateLearningSession(
     request: LearningRuntimeConsumptionRequest,
   ): Promise<LearningRuntimeConsumptionResult> {
