@@ -1,0 +1,7 @@
+export enum LearningSessionStatus {
+  CREATED = 'CREATED',
+  AUTHORIZED = 'AUTHORIZED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+}
