@@ -13,10 +13,49 @@ import { LearningSessionDeliveryDto } from '../dto/learning-session-delivery.dto
 import { LearningSessionStateDto } from '../dto/learning-session-state.dto';
 import { LearningSessionTransitionDto } from '../dto/learning-session-transition.dto';
 import { LearningSessionLifecycleDto } from '../dto/learning-session-lifecycle.dto';
+import { LearningSessionAatInteractionDto } from '../dto/learning-session-aat-interaction.dto';
 import { LearningSessionService } from '../services/learning-session.service';
 
 @Controller('learning-runtime')
 export class LearningRuntimeController {
+
+  @Post('aat/question-policy')
+  questionPolicy(@Body() request: LearningSessionAatInteractionDto) {
+    return this.sessionService.classifyLessonQuestion(
+      request.question,
+      request.lessonContext,
+    );
+  }
+
+  @Post('aat/familiarity')
+  familiarity(@Body() request: LearningSessionAatInteractionDto) {
+    return this.sessionService.getAatFamiliarityContext(
+      request.learnerId,
+      request.subject,
+      request.module,
+      'LESSON',
+    );
+  }
+
+  @Post('enter-ptdm')
+  async enterPtdm(@Body() request: LearningSessionAatInteractionDto) {
+    const session = await this.sessionService.enterPtdm(
+      request.sessionId,
+      request.learnerId,
+    );
+
+    return {
+      session,
+      destination: 'PTDM',
+      lessonPaused: true,
+      familiarity: this.sessionService.getAatFamiliarityContext(
+        request.learnerId,
+        request.subject,
+        request.module,
+        'PTDM',
+      ),
+    };
+  }
 
   @Post('resume-session')
   async resumeLearningSession(

@@ -51,6 +51,111 @@ export class LearningSessionService {
     return session;
   }
 
+  classifyLessonQuestion(
+    question: string,
+    lessonContext?: string,
+  ): {
+    classification: 'LESSON_CRITICAL' | 'EXTENDED' | 'UNRELATED';
+    recommendation: 'ANSWER_AND_CONTINUE' | 'ANSWER_AND_OFFER_PTDM';
+  } {
+    const normalized = question.trim().toLowerCase();
+    const context = (lessonContext || '').trim().toLowerCase();
+
+    if (!normalized) {
+      return {
+        classification: 'LESSON_CRITICAL',
+        recommendation: 'ANSWER_AND_CONTINUE',
+      };
+    }
+
+    const extendedSignals = [
+      'teach me everything',
+      'give me more examples',
+      'more examples',
+      'practice this',
+      'drill me',
+      'deeply explain',
+      'explain in detail',
+      'go deeper',
+      'advanced',
+      'quiz me',
+    ];
+
+    if (extendedSignals.some((signal) => normalized.includes(signal))) {
+      return {
+        classification: 'EXTENDED',
+        recommendation: 'ANSWER_AND_OFFER_PTDM',
+      };
+    }
+
+    if (context && normalized.includes(context)) {
+      return {
+        classification: 'LESSON_CRITICAL',
+        recommendation: 'ANSWER_AND_CONTINUE',
+      };
+    }
+
+    const lessonSignals = [
+      'why',
+      'how',
+      'what does',
+      'what is',
+      'mean',
+      'explain',
+      'answer',
+      'step',
+      'understand',
+      'this question',
+      'this part',
+    ];
+
+    if (lessonSignals.some((signal) => normalized.includes(signal))) {
+      return {
+        classification: 'LESSON_CRITICAL',
+        recommendation: 'ANSWER_AND_CONTINUE',
+      };
+    }
+
+    return {
+      classification: 'UNRELATED',
+      recommendation: 'ANSWER_AND_OFFER_PTDM',
+    };
+  }
+
+  getAatFamiliarityContext(
+    learnerId: string,
+    subject?: string,
+    module?: string,
+    origin?: 'LESSON' | 'PTDM',
+  ) {
+    return {
+      learnerId,
+      subject: subject || null,
+      module: module || null,
+      origin: origin || 'LESSON',
+      familiarity: true,
+      greetingMode: 'BRIEF',
+      continuity: true,
+    };
+  }
+
+  async enterPtdm(
+    sessionId: string,
+    learnerId: string,
+  ): Promise<LearningSession> {
+    const session = await this.getSession(sessionId, learnerId);
+
+    if (session.status !== LearningSessionStatus.IN_PROGRESS) {
+      throw new NotFoundException(
+        'Only an in-progress learning session can enter PTDM',
+      );
+    }
+
+    session.status = LearningSessionStatus.PAUSED;
+    return this.repository.save(session);
+  }
+
+
   async resumeSession(
     sessionId: string,
     learnerId: string,
