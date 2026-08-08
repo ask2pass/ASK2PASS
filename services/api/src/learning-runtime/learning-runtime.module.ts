@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { LearningSessionService } from './services/learning-session.service';
+import { LearningSession } from './entities/learning-session.entity';
 import { CoinEconomyModule } from '../coin-economy/coin-economy.module';
 import { LearningRuntimeCoinService } from './services/learning-runtime-coin.service';
 
@@ -12,7 +14,7 @@ import { LearningRuntimeService } from './services/learning-runtime.service';
     LearningRuntimeController,
   ],
 
-  providers: [
+  providers: [LearningSessionService,
     LearningRuntimeService,
     LearningRuntimeCoinService,
   ],
