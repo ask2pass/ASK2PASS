@@ -7,9 +7,18 @@ import {
 
 import { LearningRuntimeService } from '../services/learning-runtime.service';
 import { LearningSessionConsumptionDto } from '../dto/learning-session-consumption.dto';
+import { LearningSessionExecutionDto } from '../dto/learning-session-execution.dto';
 
 @Controller('learning-runtime')
 export class LearningRuntimeController {
+  @Post('execute-session')
+  async executeLearningSession(
+    @Body() request: LearningSessionExecutionDto,
+  ) {
+    return this.service.executeLearningSession(request);
+  }
+
+
 
   @Post('consume-coins')
   async consumeLearningCoins(

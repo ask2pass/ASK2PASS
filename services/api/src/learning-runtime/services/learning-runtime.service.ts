@@ -154,6 +154,14 @@ export class LearningRuntimeService {
     };
   }
 
+  async executeLearningSession(
+    request: LearningRuntimeConsumptionRequest,
+  ): Promise<LearningRuntimeConsumptionResult> {
+    const result = await this.learningRuntimeCoin.consume(request);
+
+    return result;
+  }
+
   async consumeLearningCoins(
     request: LearningRuntimeConsumptionRequest,
   ): Promise<LearningRuntimeConsumptionResult> {
