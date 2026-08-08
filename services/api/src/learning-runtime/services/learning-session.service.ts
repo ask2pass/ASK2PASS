@@ -156,6 +156,45 @@ export class LearningSessionService {
   }
 
 
+  async returnFromPtdm(
+    sessionId: string,
+    learnerId: string,
+  ): Promise<LearningSession> {
+    const session = await this.getSession(sessionId, learnerId);
+
+    if (session.status !== LearningSessionStatus.PAUSED) {
+      throw new NotFoundException(
+        'Only a paused learning session can return from PTDM',
+      );
+    }
+
+    session.status = LearningSessionStatus.IN_PROGRESS;
+
+    return this.repository.save(session);
+  }
+
+  getSessionContinuityContext(
+    learnerId: string,
+    sessionId: string,
+    subject?: string,
+    module?: string,
+    lessonContext?: string,
+    origin: 'LESSON' | 'PTDM' = 'LESSON',
+  ) {
+    return {
+      learnerId,
+      sessionId,
+      subject: subject || null,
+      module: module || null,
+      lessonContext: lessonContext || null,
+      origin,
+      familiarity: true,
+      continuity: true,
+      preserveSession: true,
+      preserveLessonContext: true,
+    };
+  }
+
   async resumeSession(
     sessionId: string,
     learnerId: string,

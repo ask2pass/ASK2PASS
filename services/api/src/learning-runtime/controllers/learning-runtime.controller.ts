@@ -14,6 +14,7 @@ import { LearningSessionStateDto } from '../dto/learning-session-state.dto';
 import { LearningSessionTransitionDto } from '../dto/learning-session-transition.dto';
 import { LearningSessionLifecycleDto } from '../dto/learning-session-lifecycle.dto';
 import { LearningSessionAatInteractionDto } from '../dto/learning-session-aat-interaction.dto';
+import { LearningSessionContinuityDto } from '../dto/learning-session-continuity.dto';
 import { LearningSessionService } from '../services/learning-session.service';
 
 @Controller('learning-runtime')
@@ -33,6 +34,42 @@ export class LearningRuntimeController {
       request.learnerId,
       request.subject,
       request.module,
+      'LESSON',
+    );
+  }
+
+  @Post('return-from-ptdm')
+  async returnFromPtdm(
+    @Body() request: LearningSessionContinuityDto,
+  ) {
+    const session = await this.sessionService.returnFromPtdm(
+      request.sessionId,
+      request.learnerId,
+    );
+
+    return {
+      session,
+      destination: 'LESSON',
+      lessonResumed: true,
+      familiarity: this.sessionService.getSessionContinuityContext(
+        request.learnerId,
+        request.sessionId,
+        request.subject,
+        request.module,
+        request.lessonContext,
+        'LESSON',
+      ),
+    };
+  }
+
+  @Post('continuity')
+  continuity(@Body() request: LearningSessionContinuityDto) {
+    return this.sessionService.getSessionContinuityContext(
+      request.learnerId,
+      request.sessionId,
+      request.subject,
+      request.module,
+      request.lessonContext,
       'LESSON',
     );
   }
