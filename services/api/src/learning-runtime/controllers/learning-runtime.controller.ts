@@ -11,9 +11,25 @@ import { LearningSessionExecutionDto } from '../dto/learning-session-execution.d
 import { LearningSessionOrchestrationDto } from '../dto/learning-session-orchestration.dto';
 import { LearningSessionDeliveryDto } from '../dto/learning-session-delivery.dto';
 import { LearningSessionStateDto } from '../dto/learning-session-state.dto';
+import { LearningSessionTransitionDto } from '../dto/learning-session-transition.dto';
+import { LearningSessionService } from '../services/learning-session.service';
 
 @Controller('learning-runtime')
 export class LearningRuntimeController {
+
+  @Post('transition-session')
+  async transitionLearningSession(
+    @Body() request: LearningSessionTransitionDto,
+  ) {
+    return this.sessionService.transition(
+      request.sessionId,
+      request.learnerId,
+      request.status,
+      request.description,
+    );
+  }
+
+
   @Post('session-state')
   async getLearningSessionState(
     @Body() request: LearningSessionStateDto,
@@ -57,6 +73,7 @@ export class LearningRuntimeController {
 
   constructor(
     private readonly service: LearningRuntimeService,
+    private readonly sessionService: LearningSessionService,
   ) {}
 
   @Get('policy')
