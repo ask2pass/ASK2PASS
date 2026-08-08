@@ -51,6 +51,42 @@ export class LearningSessionService {
     return session;
   }
 
+  async resumeSession(
+    sessionId: string,
+    learnerId: string,
+  ): Promise<LearningSession> {
+    const session = await this.getSession(sessionId, learnerId);
+
+    if (
+      session.status !== LearningSessionStatus.IN_PROGRESS &&
+      session.status !== LearningSessionStatus.PAUSED
+    ) {
+      throw new NotFoundException(
+        'Learning session is not resumable from its current state',
+      );
+    }
+
+    session.status = LearningSessionStatus.IN_PROGRESS;
+    return this.repository.save(session);
+  }
+
+  async pauseSession(
+    sessionId: string,
+    learnerId: string,
+  ): Promise<LearningSession> {
+    const session = await this.getSession(sessionId, learnerId);
+
+    if (session.status !== LearningSessionStatus.IN_PROGRESS) {
+      throw new NotFoundException(
+        'Only an in-progress learning session can be paused',
+      );
+    }
+
+    session.status = LearningSessionStatus.PAUSED;
+    return this.repository.save(session);
+  }
+
+
   async transition(
     sessionId: string,
     learnerId: string,

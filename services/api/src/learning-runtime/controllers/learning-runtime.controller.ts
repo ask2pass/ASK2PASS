@@ -12,10 +12,31 @@ import { LearningSessionOrchestrationDto } from '../dto/learning-session-orchest
 import { LearningSessionDeliveryDto } from '../dto/learning-session-delivery.dto';
 import { LearningSessionStateDto } from '../dto/learning-session-state.dto';
 import { LearningSessionTransitionDto } from '../dto/learning-session-transition.dto';
+import { LearningSessionLifecycleDto } from '../dto/learning-session-lifecycle.dto';
 import { LearningSessionService } from '../services/learning-session.service';
 
 @Controller('learning-runtime')
 export class LearningRuntimeController {
+
+  @Post('resume-session')
+  async resumeLearningSession(
+    @Body() request: LearningSessionLifecycleDto,
+  ) {
+    return this.sessionService.resumeSession(
+      request.sessionId,
+      request.learnerId,
+    );
+  }
+
+  @Post('pause-session')
+  async pauseLearningSession(
+    @Body() request: LearningSessionLifecycleDto,
+  ) {
+    return this.sessionService.pauseSession(
+      request.sessionId,
+      request.learnerId,
+    );
+  }
 
   @Post('transition-session')
   async transitionLearningSession(
