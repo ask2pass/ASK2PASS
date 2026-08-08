@@ -1,4 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { LearningRuntimeCoinService } from './learning-runtime-coin.service';
+import {
+  LearningRuntimeConsumptionRequest,
+  LearningRuntimeConsumptionResult,
+} from '../interfaces/learning-runtime-consumption.interface';
 
 import { RUNTIME_CONSTANTS } from '../constants/runtime.constants';
 
@@ -8,6 +13,11 @@ import { LearningRuntimeContext } from '../interfaces/runtime-context.interface'
 
 @Injectable()
 export class LearningRuntimeService {
+  constructor(
+    private readonly learningRuntimeCoin: LearningRuntimeCoinService,
+  ) {
+  }
+
 
   getPolicy() {
     return {
@@ -142,5 +152,11 @@ export class LearningRuntimeService {
       lessonPosition:
         Math.max(0, Math.min(100, Number(position) || 0)),
     };
+  }
+
+  async consumeLearningCoins(
+    request: LearningRuntimeConsumptionRequest,
+  ): Promise<LearningRuntimeConsumptionResult> {
+    return this.learningRuntimeCoin.consume(request);
   }
 }
