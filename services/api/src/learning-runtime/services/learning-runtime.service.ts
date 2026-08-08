@@ -1,3 +1,4 @@
+import { LearningSessionStatus } from '../enums/learning-session-status.enum';
 import { Injectable } from '@nestjs/common';
 import { LearningRuntimeCoinService } from './learning-runtime-coin.service';
 import {
@@ -153,6 +154,28 @@ export class LearningRuntimeService {
         Math.max(0, Math.min(100, Number(position) || 0)),
     };
   }
+
+  async getLearningSessionState(
+    request: {
+      sessionId: string;
+      learnerId: string;
+      status: LearningSessionStatus;
+      description?: string;
+    },
+  ): Promise<{
+    sessionId: string;
+    learnerId: string;
+    status: LearningSessionStatus;
+    description?: string;
+  }> {
+    return {
+      sessionId: request.sessionId,
+      learnerId: request.learnerId,
+      status: request.status,
+      description: request.description,
+    };
+  }
+
 
   async deliverLearningSession(
     request: LearningRuntimeConsumptionRequest,
