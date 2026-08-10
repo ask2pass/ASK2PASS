@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { AcademicPowerModule } from './academic-power/academic-power.module';
+import { OfflineContinuityModule } from './offline-continuity/offline-continuity.module';
 import { AdaptiveLearningModule } from './adaptive-learning/adaptive-learning.module';
 import { LearningProgressModule } from './learning-progress/learning-progress.module';
 import { SAPLearningIntegrationModule } from './sap-learning-integration/sap-learning-integration.module';
@@ -45,7 +47,7 @@ import { CurriculumModule } from './curriculum/curriculum.module';
 import { LearningPathModule } from './learning-path/learning-path.module';
 
 @Module({
-  imports: [AdaptiveLearningModule, LearningProgressModule, 
+  imports: [AcademicPowerModule, OfflineContinuityModule, AdaptiveLearningModule, LearningProgressModule,
 SAPLearningIntegrationModule,
 SAPModule,
 LearningEngineModule,
