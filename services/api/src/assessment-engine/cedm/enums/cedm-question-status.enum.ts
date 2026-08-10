@@ -1,0 +1,5 @@
+export enum CEDMQuestionStatus {
+  UNANSWERED = 'UNANSWERED',
+  ANSWERED = 'ANSWERED',
+  REVIEWED = 'REVIEWED',
+}

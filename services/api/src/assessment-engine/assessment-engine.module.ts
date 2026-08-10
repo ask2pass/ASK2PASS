@@ -1,4 +1,8 @@
 import { Module } from '@nestjs/common';
+import { CEDMContinuityService } from './cedm/services/cedm-continuity.service';
+import { CEDMQuestionService } from './cedm/services/cedm-question.service';
+import { CEDMContinuityController } from './cedm/controllers/cedm-continuity.controller';
+import { CEDMQuestionController } from './cedm/controllers/cedm-question.controller';
 import { CEDMService } from './cedm/services/cedm.service';
 import { CEDMController } from './cedm/controllers/cedm.controller';
 import { AssessmentPathController } from './controllers/assessment-path.controller';
@@ -8,16 +12,22 @@ import { ExaminationService } from './services/examination.service';
 
 @Module({
   controllers: [
+    CEDMContinuityController,
+    CEDMQuestionController,
     CEDMController,
     ExaminationController,
     AssessmentPathController,
   ],
   providers: [
+    CEDMContinuityService,
+    CEDMQuestionService,
     CEDMService,
     ExaminationService,
     AssessmentPathService,
   ],
   exports: [
+    CEDMContinuityService,
+    CEDMQuestionService,
     CEDMService,
     ExaminationService,
     AssessmentPathService,
