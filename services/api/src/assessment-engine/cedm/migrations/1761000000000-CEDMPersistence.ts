@@ -5,15 +5,14 @@ import {
   TableIndex,
 } from 'typeorm';
 
-export class CEDMPersistence1761000000000
-  implements MigrationInterface
-{
+export class CEDMPersistence1761000000000 implements MigrationInterface {
   name = 'CEDMPersistence1761000000000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    const hasQuestions = await queryRunner.hasTable('cedm_questions');
-
-    if (!hasQuestions) {
+    /*
+     * CEDM QUESTIONS
+     */
+    if (!(await queryRunner.hasTable('cedm_questions'))) {
       await queryRunner.createTable(
         new Table({
           name: 'cedm_questions',
@@ -96,7 +95,22 @@ export class CEDMPersistence1761000000000
         }),
         true,
       );
+    }
 
+    /*
+     * QUESTIONS INDEXES
+     *
+     * QueryRunner.hasIndex() is not part of the installed
+     * TypeORM QueryRunner contract. Use getTable().indices.
+     */
+    let questionsTable = await queryRunner.getTable('cedm_questions');
+
+    if (
+      questionsTable &&
+      !questionsTable.indices.some(
+        (index) => index.name === 'IDX_CEDM_QUESTIONS_SUBJECT_TOPIC',
+      )
+    ) {
       await queryRunner.createIndex(
         'cedm_questions',
         new TableIndex({
@@ -104,7 +118,16 @@ export class CEDMPersistence1761000000000
           columnNames: ['subjectId', 'topicId'],
         }),
       );
+    }
 
+    questionsTable = await queryRunner.getTable('cedm_questions');
+
+    if (
+      questionsTable &&
+      !questionsTable.indices.some(
+        (index) => index.name === 'IDX_CEDM_QUESTIONS_EXAM_SOURCE',
+      )
+    ) {
       await queryRunner.createIndex(
         'cedm_questions',
         new TableIndex({
@@ -114,9 +137,10 @@ export class CEDMPersistence1761000000000
       );
     }
 
-    const hasSessions = await queryRunner.hasTable('cedm_sessions');
-
-    if (!hasSessions) {
+    /*
+     * CEDM SESSIONS
+     */
+    if (!(await queryRunner.hasTable('cedm_sessions'))) {
       await queryRunner.createTable(
         new Table({
           name: 'cedm_sessions',
@@ -194,7 +218,19 @@ export class CEDMPersistence1761000000000
         }),
         true,
       );
+    }
 
+    /*
+     * SESSION INDEXES
+     */
+    let sessionsTable = await queryRunner.getTable('cedm_sessions');
+
+    if (
+      sessionsTable &&
+      !sessionsTable.indices.some(
+        (index) => index.name === 'IDX_CEDM_SESSIONS_LEARNER_STATUS',
+      )
+    ) {
       await queryRunner.createIndex(
         'cedm_sessions',
         new TableIndex({
@@ -202,7 +238,16 @@ export class CEDMPersistence1761000000000
           columnNames: ['learnerId', 'status'],
         }),
       );
+    }
 
+    sessionsTable = await queryRunner.getTable('cedm_sessions');
+
+    if (
+      sessionsTable &&
+      !sessionsTable.indices.some(
+        (index) => index.name === 'IDX_CEDM_SESSIONS_SUBJECT_EXAM',
+      )
+    ) {
       await queryRunner.createIndex(
         'cedm_sessions',
         new TableIndex({
