@@ -8,9 +8,16 @@ import { CEDMQuestionSource } from '../interfaces/cedm-question-source.interface
 import { CEDMSimulationProfile } from '../interfaces/cedm-simulation-profile.interface';
 import { CEDMResult, CEDMTopicResult } from '../interfaces/cedm-result.interface';
 import { CEDMSession } from '../interfaces/cedm-session.interface';
+import { CEDMPersistenceRepository } from '../repositories/cedm-persistence.repository';
+import { Optional } from '@nestjs/common';
 
 @Injectable()
 export class CEDMService {
+  constructor(
+    @Optional()
+    private readonly persistence?: CEDMPersistenceRepository,
+  ) {}
+
   private readonly masteryThresholdPercent = 65;
   private readonly minimumTopics = 5;
 
@@ -198,6 +205,47 @@ export class CEDMService {
     };
   }
 
+
+  async persistSession(session: CEDMSession): Promise<void> {
+    if (!this.persistence) return;
+
+    await this.persistence.saveSession({
+      id: session.sessionId,
+      learnerId: session.learnerId,
+      examinationType: session.examinationType,
+      subjectId: session.subjectId,
+      topicIds: session.topicIds,
+      adaptiveMode: session.adaptiveMode,
+      questionSourceType: session.questionSourceType,
+      status: session.status,
+      currentTopicIndex: session.currentTopicIndex,
+      scorePercent: session.scorePercent,
+      masteryThresholdPercent: session.masteryThresholdPercent,
+      continuationRequired: session.continuationRequired,
+    });
+  }
+
+  async loadPersistedSession(sessionId: string): Promise<CEDMSession | null> {
+    if (!this.persistence) return null;
+
+    const entity = await this.persistence.findSession(sessionId);
+    if (!entity) return null;
+
+    return {
+      sessionId: entity.id,
+      learnerId: entity.learnerId,
+      examinationType: entity.examinationType,
+      subjectId: entity.subjectId,
+      topicIds: entity.topicIds,
+      adaptiveMode: entity.adaptiveMode,
+      questionSourceType: entity.questionSourceType,
+      status: entity.status,
+      currentTopicIndex: entity.currentTopicIndex,
+      scorePercent: Number(entity.scorePercent),
+      masteryThresholdPercent: Number(entity.masteryThresholdPercent),
+      continuationRequired: entity.continuationRequired,
+    };
+  }
 
   pauseSession(session: CEDMSession): CEDMSession {
     return {

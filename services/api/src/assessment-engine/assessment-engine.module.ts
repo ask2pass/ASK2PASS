@@ -6,6 +6,7 @@ import { CEDMContinuityController } from './cedm/controllers/cedm-continuity.con
 import { CEDMQuestionController } from './cedm/controllers/cedm-question.controller';
 import { CEDMService } from './cedm/services/cedm.service';
 import { CEDMPersistenceModule } from './cedm/cedm-persistence.module';
+import { CEDMPersistenceRepository } from './cedm/repositories/cedm-persistence.repository';
 import { CEDMController } from './cedm/controllers/cedm.controller';
 import { AssessmentPathController } from './controllers/assessment-path.controller';
 import { AssessmentPathService } from './services/assessment-path.service';
@@ -22,6 +23,8 @@ import { ExaminationService } from './services/examination.service';
     AssessmentPathController,
   ],
   providers: [
+    CEDMPersistenceRepository,
+    CEDMPersistenceRepository,
     CEDMGenerationService,
     CEDMContinuityService,
     CEDMQuestionService,

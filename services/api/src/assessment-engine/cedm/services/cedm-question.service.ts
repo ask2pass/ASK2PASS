@@ -5,9 +5,17 @@ import { CEDMQuestionSourceType } from '../enums/cedm-question-source-type.enum'
 import { CEDMQuestionType } from '../enums/cedm-question-type.enum';
 import { CEDMQuestion } from '../interfaces/cedm-question.interface';
 import { CEDMAnswerResult } from '../interfaces/cedm-answer-result.interface';
+import { CEDMPersistenceRepository } from '../repositories/cedm-persistence.repository';
+import { CEDMQuestionEntity } from '../entities/cedm-question.entity';
+import { Optional } from '@nestjs/common';
 
 @Injectable()
 export class CEDMQuestionService {
+  constructor(
+    @Optional()
+    private readonly persistence?: CEDMPersistenceRepository,
+  ) {}
+
   private readonly questions = new Map<string, CEDMQuestion>();
 
   generateSimulationQuestion(
@@ -64,6 +72,32 @@ export class CEDMQuestionService {
 
     this.questions.set(question.questionId, question);
     return question;
+  }
+
+  async persistQuestion(question: CEDMQuestion): Promise<CEDMQuestionEntity | null> {
+    if (!this.persistence) return null;
+
+    return this.persistence.saveQuestion({
+      id: question.questionId,
+      examinationType: question.examinationType,
+      subjectId: question.subjectId,
+      topicId: question.topicId,
+      questionType: question.questionType,
+      questionText: question.questionText,
+      options: question.options,
+      correctAnswer: question.correctAnswer,
+      explanation: question.explanation,
+      sourceType: question.sourceType,
+      licensed: question.licensed,
+      sourceVerified: question.sourceVerified,
+      generated: question.generated,
+      year: question.year ?? null,
+    });
+  }
+
+  async loadPersistedQuestion(questionId: string): Promise<CEDMQuestionEntity | null> {
+    if (!this.persistence) return null;
+    return this.persistence.findQuestion(questionId);
   }
 
   getQuestion(questionId: string): CEDMQuestion {

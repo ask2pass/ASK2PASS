@@ -14,6 +14,6 @@ export interface CEDMSession {
   status: CEDMSessionStatus;
   currentTopicIndex: number;
   scorePercent: number;
-  masteryThresholdPercent: 65;
-  continuationRequired: true;
+  masteryThresholdPercent: number;
+  continuationRequired: boolean;
 }
