@@ -1,0 +1,5 @@
+export enum CEDMAdaptiveMode {
+  GUIDED = 'GUIDED',
+  REMEDIATION = 'REMEDIATION',
+  PROGRESSIVE = 'PROGRESSIVE',
+}
