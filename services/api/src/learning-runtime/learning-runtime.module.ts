@@ -11,8 +11,10 @@ import { LearningSessionAcademicPowerService } from './services/learning-session
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
-  imports: [TypeOrmModule.forFeature([LearningSession])],
-  imports: [CoinEconomyModule],
+  imports: [
+    TypeOrmModule.forFeature([LearningSession]),
+    CoinEconomyModule,
+  ],
   controllers: [
     LearningRuntimeController,
   ],
