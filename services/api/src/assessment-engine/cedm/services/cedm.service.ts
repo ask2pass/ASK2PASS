@@ -198,6 +198,88 @@ export class CEDMService {
     };
   }
 
+
+  pauseSession(session: CEDMSession): CEDMSession {
+    return {
+      ...session,
+      status: CEDMSessionStatus.PAUSED,
+      continuationRequired: true,
+    };
+  }
+
+  resumeSession(session: CEDMSession): CEDMSession {
+    if (session.status === CEDMSessionStatus.COMPLETED) {
+      throw new BadRequestException('Completed CEDM sessions cannot be resumed.');
+    }
+
+    return {
+      ...session,
+      status: CEDMSessionStatus.ACTIVE,
+      continuationRequired: true,
+    };
+  }
+
+  completeSession(session: CEDMSession): CEDMSession {
+    return {
+      ...session,
+      status: CEDMSessionStatus.COMPLETED,
+      continuationRequired: true,
+    };
+  }
+
+  canProgressFromTopic(
+    scorePercent: number,
+    adaptiveMode: CEDMAdaptiveMode,
+  ): boolean {
+    if (scorePercent > this.masteryThresholdPercent) {
+      return true;
+    }
+
+    /*
+     * A learner must NOT be permanently trapped at 65%.
+     * Adaptive modes intervene below or at the threshold and
+     * provide another learning route before progression.
+     */
+    return adaptiveMode === CEDMAdaptiveMode.GUIDED ||
+      adaptiveMode === CEDMAdaptiveMode.REMEDIATION;
+  }
+
+  getNextAdaptiveAction(
+    scorePercent: number,
+    adaptiveMode: CEDMAdaptiveMode,
+  ): string {
+    if (scorePercent > this.masteryThresholdPercent) {
+      return 'PROGRESS_TO_NEXT_TOPIC';
+    }
+
+    switch (adaptiveMode) {
+      case CEDMAdaptiveMode.GUIDED:
+        return 'GUIDED_RETRY_WITH_TARGETED_PRACTICE';
+
+      case CEDMAdaptiveMode.REMEDIATION:
+        return 'REMEDIATION_WITH_WEAK_AREA_RETEACHING';
+
+      case CEDMAdaptiveMode.PROGRESSIVE:
+        return 'PROGRESSIVE_REASSESSMENT';
+
+      default:
+        return 'ADAPTIVE_REASSESSMENT';
+    }
+  }
+
+  validateTopicSelection(topicIds: string[]): boolean {
+    return [...new Set(topicIds)].length >= this.minimumTopics;
+  }
+
+  validatePastQuestionYear(year: number): boolean {
+    return Number.isInteger(year) && year >= 2018 && year <= 2026;
+  }
+
+  isCEDMContinuationRequired(session: CEDMSession): boolean {
+    return session.continuationRequired === true &&
+      session.status !== CEDMSessionStatus.COMPLETED;
+  }
+
   explainProgressionRule(): string {
     return (
       'CEDM mastery is above 65%. Adaptive remediation, guided practice, ' +
