@@ -1,23 +1,9 @@
+
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { LearningPathController } from './learning-path.controller';
-import { LearningPathService } from './learning-path.service';
-
-import { LearningPath } from './entities/learning-path.entity';
-import { DailySubjectChart } from './entities/daily-subject-chart.entity';
-import { LearningSession } from './entities/learning-session.entity';
-import { LearningRuntimeModule } from './runtime/learning-runtime.module';
+import { LearningPathController } from './controllers/learning-path.controller';
+import { LearningPathService } from './services/learning-path.service';
 
 @Module({
-  imports: [
-    LearningRuntimeModule,
-    TypeOrmModule.forFeature([
-      LearningPath,
-      DailySubjectChart,
-      LearningSession,
-    ]),
-  ],
   controllers: [LearningPathController],
   providers: [LearningPathService],
   exports: [LearningPathService],
