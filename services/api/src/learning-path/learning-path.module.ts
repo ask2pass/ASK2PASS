@@ -5,7 +5,12 @@ import { LearningRuntimeDirectiveController } from './controllers/learning-runti
 import { LearningPathService } from './services/learning-path.service';
 import { LearningRuntimeDirectiveService } from './services/learning-runtime-directive.service';
 
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DailySubjectChart } from './entities/daily-subject-chart.entity';
+import { LearningPath } from './entities/learning-path.entity';
+import { LearningSession } from './entities/learning-session.entity';
 @Module({
+  imports: [TypeOrmModule.forFeature([DailySubjectChart, LearningPath, LearningSession])],
   controllers: [
     LearningPathController,
     LearningRuntimeDirectiveController,

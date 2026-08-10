@@ -7,9 +7,7 @@ import { LearnerProfileService } from './learner-profile.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      LearnerProfile,
-    ]),
+    TypeOrmModule.forFeature([LearnerProfile]),
   ],
   controllers: [LearnerProfileController],
   providers: [LearnerProfileService],

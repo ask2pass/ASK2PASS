@@ -9,10 +9,7 @@ import { User } from '../user/entities/user.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      VerificationCode,
-      User,
-    ]),
+    TypeOrmModule.forFeature([VerificationCode, User]),
   ],
   controllers: [
     VerificationController,

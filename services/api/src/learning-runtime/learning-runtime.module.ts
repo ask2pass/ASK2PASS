@@ -9,7 +9,9 @@ import { LearningRuntimeController } from './controllers/learning-runtime.contro
 import { LearningRuntimeService } from './services/learning-runtime.service';
 import { LearningSessionAcademicPowerService } from './services/learning-session-academic-power.service';
 
+import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
+  imports: [TypeOrmModule.forFeature([LearningSession])],
   imports: [CoinEconomyModule],
   controllers: [
     LearningRuntimeController,
