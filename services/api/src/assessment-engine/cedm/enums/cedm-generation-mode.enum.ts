@@ -1,0 +1,5 @@
+export enum CEDMGenerationMode {
+  LICENSED_ONLY = 'LICENSED_ONLY',
+  SIMULATED_ONLY = 'SIMULATED_ONLY',
+  HYBRID = 'HYBRID',
+}
