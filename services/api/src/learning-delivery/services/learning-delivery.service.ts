@@ -1,45 +1,48 @@
+
 import { Injectable } from '@nestjs/common';
-import { DELIVERY_CONSTANTS } from '../constants/delivery.constants';
+import {
+  LearningDeliveryPlan,
+  LearningDeliveryRequest,
+} from '../interfaces/learning-delivery.interface';
 
 @Injectable()
 export class LearningDeliveryService {
+  private readonly version = 1;
 
-  getDeliveryPolicy(){
+  prepare(
+    request: LearningDeliveryRequest,
+  ): LearningDeliveryPlan {
+    const assessmentRequired = request.action === 'ASSESS';
+
+    const runtimeDirective =
+      request.action === 'LEARN'
+        ? 'DELIVER_LEARNING_CONTENT'
+        : request.action === 'PRACTICE'
+          ? 'DELIVER_TARGETED_PRACTICE'
+          : request.action === 'DRILL'
+            ? 'DELIVER_MASTERY_DRILL'
+            : request.action === 'ASSESS'
+              ? 'DELIVER_ASSESSMENT'
+              : 'DELIVER_REVIEW';
+
+    const resumeSessionId = request.resumeSessionId ?? null;
+
     return {
-      lessonMinutes:
-        DELIVERY_CONSTANTS.LESSON_DURATION_MINUTES,
-
-      revisionMinutes:
-        DELIVERY_CONSTANTS.REVISION_DURATION_MINUTES,
-
-      cbtMinutes:
-        DELIVERY_CONSTANTS.CBT_DURATION_MINUTES,
-
-      controls:{
-        play:
-          DELIVERY_CONSTANTS.PLAY_ENABLED,
-
-        pause:
-          DELIVERY_CONSTANTS.PAUSE_ENABLED,
-
-        fastForward:
-          DELIVERY_CONSTANTS.FAST_FORWARD_ENABLED,
-
-        replay:
-          DELIVERY_CONSTANTS.REPLAY_ENABLED_SCHOOL_LESSON,
-      },
-
-      questionMode:{
-        enabled:
-          DELIVERY_CONSTANTS.QUESTION_MODE_ENABLED,
-
-        returnPosition:
-          DELIVERY_CONSTANTS.RETURN_TO_LESSON_POSITION,
-      },
-
-      offlineAI:
-        DELIVERY_CONSTANTS.OFFLINE_AI_CONTENT_ENABLED,
+      learnerId: request.learnerId,
+      examinationType: request.examinationType,
+      subjectId: request.subjectId,
+      topicId: request.topicId ?? null,
+      action: request.action,
+      coinCost: request.coinCost,
+      status: resumeSessionId ? 'RESUME' : 'READY',
+      runtimeDirective,
+      assessmentRequired,
+      resumeSessionId,
+      reason: resumeSessionId
+        ? 'Existing learner state is available; delivery should resume from the preserved runtime state.'
+        : 'A new learning delivery cycle is ready for runtime execution.',
+      version: this.version,
+      generatedAt: new Date().toISOString(),
     };
   }
-
 }
