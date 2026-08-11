@@ -10,6 +10,7 @@ export default () => ({
     password: process.env.DB_PASSWORD,
     schema: process.env.DB_SCHEMA,
     synchronize: process.env.DB_SYNCHRONIZE === 'true',
+    migrationsRun: process.env.DB_MIGRATIONS_RUN === 'true',
     logging: process.env.DB_LOGGING === 'true',
   },
 });

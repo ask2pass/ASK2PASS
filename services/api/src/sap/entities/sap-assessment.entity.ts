@@ -19,10 +19,10 @@ export class SAPAssessmentEntity {
   @Column()
   learnerId: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   sessionId: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   lessonId: string | null;
 
   @Column()

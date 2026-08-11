@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LearningPathService } from '../../learning-path/services/learning-path.service';
+import { LearningPathGeneratorService } from '../../learning-path/services/learning-path.service';
 import { LearningRuntimeDirectiveService } from '../../learning-path/services/learning-runtime-directive.service';
 import { LearningProgressEntity } from '../entities/learning-progress.entity';
 import { RecordLearningResultDto } from '../dto/record-learning-result.dto';
@@ -13,7 +13,7 @@ import {
 export class LearningProgressService {
   constructor(
     private readonly repository: LearningProgressRepository,
-    private readonly learningPathService: LearningPathService,
+    private readonly learningPathService: LearningPathGeneratorService,
     private readonly runtimeDirectiveService: LearningRuntimeDirectiveService,
   ) {}
 

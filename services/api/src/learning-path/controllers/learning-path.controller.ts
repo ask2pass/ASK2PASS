@@ -1,12 +1,12 @@
 
 import { Body, Controller, Post } from '@nestjs/common';
 import { GenerateLearningPathDto } from '../dto/generate-learning-path.dto';
-import { LearningPathService } from '../services/learning-path.service';
+import { LearningPathGeneratorService } from '../services/learning-path.service';
 
 @Controller('learning-path')
 export class LearningPathController {
   constructor(
-    private readonly learningPathService: LearningPathService,
+    private readonly learningPathService: LearningPathGeneratorService,
   ) {}
 
   @Post('generate')

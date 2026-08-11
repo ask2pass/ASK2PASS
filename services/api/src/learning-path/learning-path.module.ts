@@ -1,8 +1,9 @@
 
 import { Module } from '@nestjs/common';
-import { LearningPathController } from './controllers/learning-path.controller';
+import { LearningPathController } from './learning-path.controller';
 import { LearningRuntimeDirectiveController } from './controllers/learning-runtime-directive.controller';
-import { LearningPathService } from './services/learning-path.service';
+import { LearningPathService } from './learning-path.service';
+import { LearningPathGeneratorService } from './services/learning-path.service';
 import { LearningRuntimeDirectiveService } from './services/learning-runtime-directive.service';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -17,10 +18,12 @@ import { LearningSession } from './entities/learning-session.entity';
   ],
   providers: [
     LearningPathService,
+    LearningPathGeneratorService,
     LearningRuntimeDirectiveService,
   ],
   exports: [
     LearningPathService,
+    LearningPathGeneratorService,
     LearningRuntimeDirectiveService,
   ],
 })

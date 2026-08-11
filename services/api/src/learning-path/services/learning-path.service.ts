@@ -11,7 +11,7 @@ import {
 } from '../dto/generate-learning-path.dto';
 
 @Injectable()
-export class LearningPathService {
+export class LearningPathGeneratorService {
   private readonly version = 1;
 
   generate(dto: GenerateLearningPathDto): LearningPath {

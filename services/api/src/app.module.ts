@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AATAvatarModule } from './aat-avatar/aat-avatar.module';
 import { AcademicPowerModule } from './academic-power/academic-power.module';
 import { OfflineContinuityModule } from './offline-continuity/offline-continuity.module';
 import { AdaptiveLearningModule } from './adaptive-learning/adaptive-learning.module';
@@ -47,7 +48,8 @@ import { CurriculumModule } from './curriculum/curriculum.module';
 import { LearningPathModule } from './learning-path/learning-path.module';
 
 @Module({
-  imports: [AcademicPowerModule, OfflineContinuityModule, AdaptiveLearningModule, LearningProgressModule,
+  imports: [
+    AATAvatarModule,AcademicPowerModule, OfflineContinuityModule, AdaptiveLearningModule, LearningProgressModule,
 SAPLearningIntegrationModule,
 SAPModule,
 LearningEngineModule,
@@ -71,6 +73,7 @@ CurriculumControlModule,
 
     TypeOrmModule.forRootAsync({
       imports: [
+    AATAvatarModule,
 SAPLearningIntegrationModule,
 SAPModule,
 LearningEngineModule,
@@ -99,8 +102,8 @@ CurriculumControlModule,ConfigModule],
           synchronize: config.getOrThrow<boolean>('database.synchronize'),
           logging: config.getOrThrow<boolean>('database.logging'),
           autoLoadEntities: true,
-          migrations: [__dirname + '/database/migrations/*{.js,.ts}'],
-          migrationsRun: true,
+          migrations: [__dirname + '/**/migrations/*{.js,.ts}'],
+          migrationsRun: config.get<boolean>('database.migrationsRun'),
         };
       },
     }),
