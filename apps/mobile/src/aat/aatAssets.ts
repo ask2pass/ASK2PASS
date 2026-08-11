@@ -35,7 +35,7 @@ export const AAT_ASSETS: Record<AATId, AATAssetProfile> = {
     name: 'Mrs. UD',
     role: 'SAP Instructor / Facilitator',
     image: require('../../assets/aat/mrs-ud/mrs-ud.png'),
-    voice: require('../../assets/aat/mrs-ud/mrs-ud-voice.m4a'),
+    voice: require('../../assets/aat/mrs-ud/mrs-ud-finetuned.m4a'),
     voiceTimed: true,
     lipSyncEnabled: true,
     whiteboardEnabled: true,

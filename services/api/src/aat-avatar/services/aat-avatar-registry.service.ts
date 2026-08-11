@@ -24,7 +24,7 @@ export class AATAvatarRegistryService {
       name: 'Mrs. UD',
       role: 'SAP Instructor / Facilitator',
       imageAsset: 'assets/aat/mrs-ud/mrs-ud.png',
-      voiceAsset: 'assets/aat/mrs-ud/mrs-ud-voice.m4a',
+      voiceAsset: 'assets/aat/mrs-ud/mrs-ud-finetuned.m4a',
       voiceGender: 'FEMALE',
       voiceStyles: ['CAPTIVATING', 'FIRM', 'COMFORTING', 'ENCOURAGING', 'EXAM_FOCUS'],
       voiceTimed: true,
