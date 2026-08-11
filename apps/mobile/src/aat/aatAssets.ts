@@ -50,7 +50,7 @@ export const AAT_ASSETS: Record<AATId, AATAssetProfile> = {
     role: 'Biology Teacher / Specialist',
     specialty: 'Biology',
     image: require('../../assets/aat/mr-yoms/mr-yoms.png'),
-    voice: null,
+    voice: require('../../assets/aat/mr-yoms/mr-yoms-voice.m4a'),
     voiceTimed: true,
     lipSyncEnabled: true,
     whiteboardEnabled: true,
