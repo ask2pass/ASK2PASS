@@ -27,6 +27,10 @@
         "projectId": "0e05c4f6-0083-403c-a5a5-b1848f8e20ad"
       }
     },
-    "owner": "ask2pass"
+    "owner": "ask2pass",
+    "plugins": [
+      "expo-audio",
+      "expo-asset"
+    ]
   }
 }

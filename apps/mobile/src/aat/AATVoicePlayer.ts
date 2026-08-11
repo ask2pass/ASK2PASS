@@ -1,24 +1,22 @@
-import { Audio } from 'expo-av';
+import { createAudioPlayer, AudioPlayer } from 'expo-audio';
 
-let sound: Audio.Sound | null = null;
+let player: AudioPlayer | null = null;
 
-export async function playAATVoice(voice: any): Promise<void> {
-  if (sound) {
-    await sound.unloadAsync();
-    sound = null;
+export function playAATVoice(voice: any): void {
+  if (player) {
+    player.release();
+    player = null;
   }
 
-  const result = await Audio.Sound.createAsync(voice, {
-    shouldPlay: true,
-    volume: 1.0,
-  });
-
-  sound = result.sound;
+  player = createAudioPlayer(voice);
+  player.volume = 1.0;
+  player.play();
 }
 
-export async function stopAATVoice(): Promise<void> {
-  if (!sound) return;
-  await sound.stopAsync();
-  await sound.unloadAsync();
-  sound = null;
+export function stopAATVoice(): void {
+  if (!player) return;
+
+  player.pause();
+  player.release();
+  player = null;
 }
