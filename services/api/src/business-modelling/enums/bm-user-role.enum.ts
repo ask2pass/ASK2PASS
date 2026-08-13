@@ -1,0 +1,9 @@
+export enum BMUserRole {
+  STUDENT = 'STUDENT',
+  SAP_USER = 'SAP_USER',
+  TEACHER = 'TEACHER',
+  FACILITATOR = 'FACILITATOR',
+  ENTERPRISE = 'ENTERPRISE',
+  ADMIN = 'ADMIN',
+  CEO = 'CEO',
+}

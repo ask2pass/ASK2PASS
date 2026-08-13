@@ -1,3 +1,5 @@
+import { ClassroomControlsModule } from './classroom-controls/classroom-controls.module';
+import { ClassroomControlsController } from './controllers/classroom-controls.controller';
 import { Module } from '@nestjs/common';
 import { LearningSessionService } from './services/learning-session.service';
 import { LearningSession } from './entities/learning-session.entity';
@@ -12,10 +14,12 @@ import { LearningSessionAcademicPowerService } from './services/learning-session
 import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [
+    ClassroomControlsModule,
     TypeOrmModule.forFeature([LearningSession]),
     CoinEconomyModule,
   ],
   controllers: [
+    ClassroomControlsController,
     LearningRuntimeController,
   ],
 

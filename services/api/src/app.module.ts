@@ -1,3 +1,4 @@
+import { BusinessModellingModule } from './business-modelling/business-modelling.module';
 import { Module } from '@nestjs/common';
 import { AATAvatarModule } from './aat-avatar/aat-avatar.module';
 import { AcademicPowerModule } from './academic-power/academic-power.module';
@@ -49,6 +50,7 @@ import { LearningPathModule } from './learning-path/learning-path.module';
 
 @Module({
   imports: [
+    BusinessModellingModule,
     AATAvatarModule,AcademicPowerModule, OfflineContinuityModule, AdaptiveLearningModule, LearningProgressModule,
 SAPLearningIntegrationModule,
 SAPModule,
