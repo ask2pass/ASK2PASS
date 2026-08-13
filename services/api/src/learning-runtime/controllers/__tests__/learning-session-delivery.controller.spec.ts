@@ -20,6 +20,8 @@ describe('LearningRuntimeController - session delivery', () => {
 
     controller = new LearningRuntimeController(
       learningRuntimeService,
+      {} as any,
+      {} as any,
     );
   });
 

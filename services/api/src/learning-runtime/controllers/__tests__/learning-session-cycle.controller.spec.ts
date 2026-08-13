@@ -56,6 +56,7 @@ describe('LearningRuntimeController - 40 minute learning cycle', () => {
     controller = new LearningRuntimeController(
       runtimeService,
       sessionService,
+      {} as any,
     );
   });
 
@@ -109,7 +110,7 @@ describe('LearningRuntimeController - 40 minute learning cycle', () => {
 
     expect(result.stage).toBe('CBT_QUIZ');
     expect(result.durationMinutes).toBe(10);
-    expect(result.questionCount).toBe(15);
+    expect((result as any).questionCount).toBe(15);
   });
 
   it('validates the mandatory 15-question CBT contract', () => {
@@ -122,6 +123,6 @@ describe('LearningRuntimeController - 40 minute learning cycle', () => {
     ).toHaveBeenCalledWith(15);
 
     expect(result.valid).toBe(true);
-    expect(result.questionCount).toBe(15);
+    expect((result as any).questionCount).toBe(15);
   });
 });

@@ -61,6 +61,8 @@ describe('CEDM production persistence boundary', () => {
       CEDMExaminationType.WASSCE,
       'subject-1',
       ['t1', 't2', 't3', 't4', 't5'],
+      'GUIDED' as any,
+      'AI_SIMULATED' as any,
     );
 
     await service.persistSession(session);

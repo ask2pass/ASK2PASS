@@ -45,6 +45,7 @@ describe('LearningRuntimeController - AAT continuity and PTDM return', () => {
     controller = new LearningRuntimeController(
       runtimeService,
       sessionService,
+      {} as any,
     );
   });
 

@@ -18,7 +18,11 @@ describe('LearningRuntimeController - session orchestration', () => {
       }),
     };
 
-    controller = new LearningRuntimeController(learningRuntimeService);
+    controller = new LearningRuntimeController(
+        learningRuntimeService,
+        {} as any,
+        {} as any,
+      );
   });
 
   it('routes orchestration to the production runtime service', async () => {

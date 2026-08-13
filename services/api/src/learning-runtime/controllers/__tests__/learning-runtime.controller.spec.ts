@@ -18,7 +18,11 @@ describe('LearningRuntimeController', () => {
       }),
     };
 
-    controller = new LearningRuntimeController(learningRuntimeService);
+    controller = new LearningRuntimeController(
+        learningRuntimeService,
+        {} as any,
+        {} as any,
+      );
   });
 
   it('routes learning coin consumption to the production runtime service', async () => {

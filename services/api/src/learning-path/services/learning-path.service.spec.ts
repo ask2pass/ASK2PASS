@@ -1,8 +1,8 @@
 
-import { LearningPathService } from './learning-path.service';
+import { LearningPathGeneratorService } from './learning-path.service';
 
-describe('LearningPathService', () => {
-  const service = new LearningPathService();
+describe('LearningPathGeneratorService', () => {
+  const service = new LearningPathGeneratorService();
 
   it('builds a progressive learner path from mastery state', () => {
     const result = service.generate({

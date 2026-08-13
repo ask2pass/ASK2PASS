@@ -17,6 +17,8 @@ describe('LearningRuntimeController - session state', () => {
 
     controller = new LearningRuntimeController(
       learningRuntimeService,
+      {} as any,
+      {} as any,
     );
   });
 

@@ -19,8 +19,8 @@ describe('CEDM session persistence integration contract', () => {
       CEDMExaminationType.WASSCE,
       'subject-1',
       ['topic-1', 'topic-2', 'topic-3', 'topic-4', 'topic-5'],
-      CEDMAdaptiveMode.ADAPTIVE,
-      CEDMQuestionSourceType.LICENSED,
+      CEDMAdaptiveMode.GUIDED,
+      CEDMQuestionSourceType.AI_SIMULATED,
     );
 
     expect(session.sessionId).toBeDefined();

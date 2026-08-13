@@ -29,6 +29,7 @@ describe('LearningRuntimeController - session lifecycle', () => {
     controller = new LearningRuntimeController(
       runtimeService,
       sessionService,
+      {} as any,
     );
   });
 

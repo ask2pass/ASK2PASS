@@ -44,6 +44,7 @@ describe('LearningRuntimeController - AAT lesson protection', () => {
     controller = new LearningRuntimeController(
       runtimeService,
       sessionService,
+      {} as any,
     );
   });
 

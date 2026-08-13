@@ -18,7 +18,11 @@ describe('LearningRuntimeController - session execution', () => {
       }),
     };
 
-    controller = new LearningRuntimeController(learningRuntimeService);
+    controller = new LearningRuntimeController(
+        learningRuntimeService,
+        {} as any,
+        {} as any,
+      );
   });
 
   it('routes session execution to the production runtime service', async () => {

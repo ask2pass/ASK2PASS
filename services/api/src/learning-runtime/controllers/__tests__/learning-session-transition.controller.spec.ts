@@ -25,6 +25,7 @@ describe('LearningRuntimeController - session transition', () => {
     controller = new LearningRuntimeController(
       runtimeService,
       sessionService,
+      {} as any,
     );
   });
 

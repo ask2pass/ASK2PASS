@@ -14,7 +14,7 @@ describe('Universal AAT - Academic Power CBT Controller', () => {
       getAcademicPowerCbtQuestionContract: jest.fn().mockReturnValue({
         questionNumber: 1,
         totalQuestions: 15,
-        dimension: 'CONCEPT',
+        dimension: 'CONCEPT' as any,
         lessonAnchored: true,
       }),
       getPtdmContinuationFromCbt: jest.fn().mockReturnValue({
@@ -28,6 +28,7 @@ describe('Universal AAT - Academic Power CBT Controller', () => {
     controller = new LearningRuntimeController(
       {} as any,
       sessionService,
+      {} as any,
     );
   });
 
@@ -39,7 +40,7 @@ describe('Universal AAT - Academic Power CBT Controller', () => {
       module: 'JSS2 Algebra',
       lessonContext: 'Linear equations',
       questionNumber: 1,
-      dimension: 'CONCEPT',
+      dimension: 'CONCEPT' as any,
     });
 
     expect(result.questionCount).toBe(15);
