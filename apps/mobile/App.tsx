@@ -303,7 +303,13 @@ function Tile({
       style={({ pressed }) => [s.tile, pressed && s.tilePressed]}
       onPress={onPress}
     >
-      <Text style={s.tileIcon}>{item.icon}</Text>
+      {item.id === 'sap' ? (
+        <View style={s.sapTileIcon}>
+          <Text style={s.sapTileIconText}>SAP</Text>
+        </View>
+      ) : (
+        <Text style={s.tileIcon}>{item.icon}</Text>
+      )}
       <Text style={s.tileAcronym}>{item.acronym}</Text>
       <Text style={s.tileTitle}>{item.title}</Text>
     </Pressable>
@@ -433,18 +439,20 @@ export default function App() {
         </Pressable>
       </View>
 
-      <Text style={s.sectionTitle}>SKILL ACQUISITION</Text>
+      <Text style={s.sectionTitle}>LEARNING MODULES</Text>
       <Text style={s.sectionSubtitle}>
-        Structured skill acquisition, development and progression.
+        Explore the ASK2PASS learning interfaces.
       </Text>
 
-      <View style={s.grid}>
-        <View style={s.gridItem}>
-          <Tile
-            item={learningModules.find((item) => item.id === 'sap')!}
-            onPress={() => go('sap')}
-          />
-        </View>
+      <View style={s.learningGrid}>
+        {learningModules.map((item) => (
+          <View key={item.id} style={s.learningGridItem}>
+            <Tile
+              item={item}
+              onPress={() => go(item.id)}
+            />
+          </View>
+        ))}
       </View>
 
       <Text style={s.sectionTitle}>ASK2PASS PLATFORM</Text>
@@ -858,6 +866,22 @@ const s = StyleSheet.create({
   },
   tilePressed: {
     opacity: 0.72,
+  },
+  sapTileIcon: {
+    width: 74,
+    height: 74,
+    borderRadius: 37,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#D9A800',
+    borderWidth: 6,
+    borderColor: '#F4C62E',
+  },
+  sapTileIconText: {
+    fontSize: 18,
+    fontWeight: '900',
+    color: '#FFFFFF',
+    letterSpacing: 0.5,
   },
   tileIcon: {
     fontSize: 42,
