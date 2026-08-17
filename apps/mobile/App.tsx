@@ -1083,12 +1083,12 @@ const s = StyleSheet.create({
     marginBottom: 12,
   },
   pageText: {
-    fontSize: 15,
-    lineHeight: 23,
+    fontSize: 18,
+    lineHeight: 27,
   },
   pageRules: {
-    fontSize: 13,
-    lineHeight: 20,
+    fontSize: 16,
+    lineHeight: 24,
     marginTop: 14,
     fontWeight: '700',
   },
