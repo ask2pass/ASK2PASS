@@ -526,8 +526,31 @@ export default function App() {
           </View>
         ))}
       </View>
+      <Text style={s.sectionTitle}>ASK2PASS PLATFORM</Text>
+      <Text style={s.sectionSubtitle}>
+        Core academic, curriculum and knowledge services.
+      </Text>
+
+      <View style={s.grid}>
+        {homeTools.map((item) => (
+          <View key={item.id} style={s.gridItem}>
+            <Tile item={item} onPress={() => go(item.id)} />
+          </View>
+        ))}
+      </View>
+
+      <Text style={s.sectionTitle}>USER DASHBOARD</Text>
+      <View style={s.grid}>
+        {dashboardItems.map((item) => (
+          <View key={item.id} style={s.gridItem}>
+            <Tile item={item} onPress={() => go(item.id)} />
+          </View>
+        ))}
+      </View>
     </>
   );
+
+
 
 const dashboard = (
     <>
