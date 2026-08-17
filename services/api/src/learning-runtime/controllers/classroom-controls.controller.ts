@@ -19,6 +19,8 @@ export class ClassroomControlsController {
     const context = {
       sessionId: request.sessionId ?? null,
       learningPath: request.learningPath,
+      module: request.module,
+      position: request.position ?? 0,
     };
 
     switch (request.control) {
@@ -33,6 +35,15 @@ export class ClassroomControlsController {
           context,
           request.question ?? '',
         );
+
+      case ClassroomControl.STOP:
+        return this.classroomControls.stop(context);
+
+      case ClassroomControl.BACK:
+        return this.classroomControls.back(context);
+
+      case ClassroomControl.FORWARD:
+        return this.classroomControls.forward(context);
 
       default:
         throw new Error('Unsupported classroom control');

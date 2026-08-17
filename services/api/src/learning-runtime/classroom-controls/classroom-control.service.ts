@@ -1,31 +1,58 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ClassroomControl } from './classroom-control.enum';
-import { ClassroomControlContext } from './classroom-control-context.interface';
+import {
+  ClassroomControlContext,
+  LearningModule,
+} from './classroom-control-context.interface';
 
 @Injectable()
 export class ClassroomControlService {
+  private readonly backForwardModules: LearningModule[] = [
+    'PTDM',
+    'CEDM',
+    'MEDM',
+    'SAP',
+    'BM',
+    'AEM',
+  ];
 
-  play(context: Partial<ClassroomControlContext>): ClassroomControlContext {
+  private base(
+    context: Partial<ClassroomControlContext>,
+    control: ClassroomControl,
+  ): ClassroomControlContext {
     return {
-      control: ClassroomControl.PLAY,
+      control,
       sessionId: context.sessionId ?? null,
       learningPath: context.learningPath ?? 'LEARNING_PATH',
+      module: context.module ?? 'SCLA',
       questionModeActive: false,
       paused: false,
       playable: true,
+      stopped: false,
+      position: Math.max(0, Math.min(100, Number(context.position) || 0)),
       questionRouting: 'NONE',
     };
   }
 
-  pause(context: Partial<ClassroomControlContext>): ClassroomControlContext {
+  play(
+    context: Partial<ClassroomControlContext>,
+  ): ClassroomControlContext {
     return {
-      control: ClassroomControl.PAUSE,
-      sessionId: context.sessionId ?? null,
-      learningPath: context.learningPath ?? 'LEARNING_PATH',
-      questionModeActive: false,
-      paused: true,
+      ...this.base(context, ClassroomControl.PLAY),
+      paused: false,
+      stopped: false,
       playable: true,
-      questionRouting: 'NONE',
+    };
+  }
+
+  pause(
+    context: Partial<ClassroomControlContext>,
+  ): ClassroomControlContext {
+    return {
+      ...this.base(context, ClassroomControl.PAUSE),
+      paused: true,
+      stopped: false,
+      playable: true,
     };
   }
 
@@ -36,13 +63,61 @@ export class ClassroomControlService {
     const normalized = question.trim();
 
     return {
-      control: ClassroomControl.QUESTION,
-      sessionId: context.sessionId ?? null,
-      learningPath: context.learningPath ?? 'LEARNING_PATH',
+      ...this.base(context, ClassroomControl.QUESTION),
       questionModeActive: true,
       paused: true,
+      stopped: false,
       playable: true,
-      questionRouting: normalized.length > 0 ? 'PTDM' : 'LOCAL_LESSON',
+      questionRouting:
+        normalized.length > 0 ? 'PTDM' : 'LOCAL_LESSON',
     };
+  }
+
+  stop(
+    context: Partial<ClassroomControlContext>,
+  ): ClassroomControlContext {
+    return {
+      ...this.base(context, ClassroomControl.STOP),
+      questionModeActive: false,
+      paused: true,
+      stopped: true,
+      playable: false,
+    };
+  }
+
+  back(
+    context: Partial<ClassroomControlContext>,
+  ): ClassroomControlContext {
+    this.assertBackForwardAllowed(context.module ?? 'SCLA');
+
+    return {
+      ...this.base(context, ClassroomControl.BACK),
+      position: Math.max(
+        0,
+        (Number(context.position) || 0) - 1,
+      ),
+    };
+  }
+
+  forward(
+    context: Partial<ClassroomControlContext>,
+  ): ClassroomControlContext {
+    this.assertBackForwardAllowed(context.module ?? 'SCLA');
+
+    return {
+      ...this.base(context, ClassroomControl.FORWARD),
+      position: Math.min(
+        100,
+        (Number(context.position) || 0) + 1,
+      ),
+    };
+  }
+
+  private assertBackForwardAllowed(module: LearningModule): void {
+    if (!this.backForwardModules.includes(module)) {
+      throw new BadRequestException(
+        `BACK/FORWARD controls are not available for ${module}.`,
+      );
+    }
   }
 }
