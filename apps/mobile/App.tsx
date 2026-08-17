@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Pressable,
+  BackHandler,
   Image,
   TextInput,
   SafeAreaView,
@@ -320,16 +321,34 @@ function Page({
   title,
   subtitle,
   onBack,
+  onHome,
 }: {
   title: string;
   subtitle: string;
   onBack: () => void;
+  onHome: () => void;
 }) {
   return (
     <>
-      <Pressable onPress={onBack} style={s.backButton}>
-        <Text style={s.backText}>‹ Home</Text>
-      </Pressable>
+      <View style={s.navigationBar}>
+        <Pressable
+          onPress={onBack}
+          style={s.navigationButton}
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+        >
+          <Text style={s.navigationButtonText}>‹ Back</Text>
+        </Pressable>
+
+        <Pressable
+          onPress={onHome}
+          style={s.navigationButton}
+          accessibilityRole="button"
+          accessibilityLabel="Go to home"
+        >
+          <Text style={s.navigationButtonText}>⌂ Home</Text>
+        </Pressable>
+      </View>
       <Text style={s.pageTitle}>{title}</Text>
       <Text style={s.pageSubtitle}>{subtitle}</Text>
       <View style={s.pageCard}>
@@ -397,12 +416,59 @@ export default function App() {
   const [searchText, setSearchText] = useState('');
 
   const [screen, setScreen] = useState<Screen>('home');
+  const [navigationStack, setNavigationStack] = useState<Screen[]>(['home']);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const go = (next: Screen) => {
+    setNavigationStack((current) => {
+      const last = current[current.length - 1];
+      if (last === next) return current;
+      return [...current, next];
+    });
     setScreen(next);
     setMenuOpen(false);
   };
+
+  const goBack = () => {
+    setNavigationStack((current) => {
+      if (current.length <= 1) {
+        setScreen('home');
+        return ['home'];
+      }
+
+      const next = current.slice(0, -1);
+      setScreen(next[next.length - 1]);
+      setMenuOpen(false);
+      return next;
+    });
+  };
+
+  const goHome = () => {
+    setNavigationStack(['home']);
+    setScreen('home');
+    setMenuOpen(false);
+  };
+
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        if (menuOpen) {
+          setMenuOpen(false);
+          return true;
+        }
+
+        if (navigationStack.length > 1) {
+          goBack();
+          return true;
+        }
+
+        return false;
+      },
+    );
+
+    return () => subscription.remove();
+  }, [navigationStack, menuOpen]);
 
   const home = (
     <>
@@ -413,30 +479,39 @@ export default function App() {
           resizeMode="contain"
         />
 
-      </View>
-
-      <View style={s.quickSearchBar}>
-        <TextInput
-          style={s.quickSearchInput}
-          value={searchText}
-          onChangeText={setSearchText}
-          onSubmitEditing={() => go('academicSearch')}
-          returnKeyType="search"
-          multiline={true}
-          numberOfLines={3}
-          textAlignVertical="top"
-          placeholder="Enter your search here..."
-          placeholderTextColor="#5B6B78"
-          accessibilityLabel="Quick Search input"
-        />
-
         <Pressable
-          style={s.quickSearchButton}
-          onPress={() => go('academicSearch')}
-          accessibilityLabel="QuickSearch"
+          style={s.heroMenuButton}
+          onPress={() => setMenuOpen((current) => !current)}
+          accessibilityRole="button"
+          accessibilityLabel="Open menu"
         >
-          <Text style={s.quickSearchButtonText}>⌕ Quick{"\n"}Search</Text>
+          <Text style={s.heroMenuIcon}>☰</Text>
         </Pressable>
+
+        <View style={s.miniQuickSearch}>
+          <TextInput
+            style={s.miniQuickSearchInput}
+            value={searchText}
+            onChangeText={setSearchText}
+            onSubmitEditing={() => go('academicSearch')}
+            returnKeyType="search"
+            multiline={true}
+            numberOfLines={3}
+            textAlignVertical="top"
+            placeholder={"Enter your search here...\nSearch subjects, topics, lessons...\nSearch anything across ASK2PASS..."}
+            placeholderTextColor="#5B6B78"
+            accessibilityLabel="Quick Search input"
+          />
+
+          <Pressable
+            style={s.miniQuickSearchButton}
+            onPress={() => go('academicSearch')}
+            accessibilityRole="button"
+            accessibilityLabel="Search"
+          >
+            <Text style={s.miniQuickSearchButtonText}>Quick{"\n"}Search</Text>
+          </Pressable>
+        </View>
       </View>
 
       <Text style={s.sectionTitle}>LEARNING MODULES</Text>
@@ -447,31 +522,6 @@ export default function App() {
       <View style={s.learningGrid}>
         {learningModules.map((item) => (
           <View key={item.id} style={s.learningGridItem}>
-            <Tile
-              item={item}
-              onPress={() => go(item.id)}
-            />
-          </View>
-        ))}
-      </View>
-
-      <Text style={s.sectionTitle}>ASK2PASS PLATFORM</Text>
-      <Text style={s.sectionSubtitle}>
-        Core academic, curriculum and knowledge services.
-      </Text>
-
-      <View style={s.grid}>
-        {homeTools.map((item) => (
-          <View key={item.id} style={s.gridItem}>
-            <Tile item={item} onPress={() => go(item.id)} />
-          </View>
-        ))}
-      </View>
-
-      <Text style={s.sectionTitle}>USER DASHBOARD</Text>
-      <View style={s.grid}>
-        {dashboardItems.map((item) => (
-          <View key={item.id} style={s.gridItem}>
             <Tile item={item} onPress={() => go(item.id)} />
           </View>
         ))}
@@ -479,22 +529,32 @@ export default function App() {
     </>
   );
 
-  const dashboard = (
+const dashboard = (
     <>
+      <View style={s.navigationBar}>
+        <Pressable
+          onPress={goBack}
+          style={s.navigationButton}
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+        >
+          <Text style={s.navigationButtonText}>‹ Back</Text>
+        </Pressable>
+
+        <Pressable
+          onPress={goHome}
+          style={s.navigationButton}
+          accessibilityRole="button"
+          accessibilityLabel="Go to home"
+        >
+          <Text style={s.navigationButtonText}>⌂ Home</Text>
+        </Pressable>
+      </View>
+
       <Text style={s.welcome}>Dashboard</Text>
       <Text style={s.homeSubtitle}>
         Your profiles, academic records, achievements and platform status.
       </Text>
-
-      <View style={s.profileBanner}>
-        <Text style={s.profileIcon}>👤</Text>
-        <View style={{ flex: 1 }}>
-          <Text style={s.profileTitle}>Student Profile</Text>
-          <Text style={s.profileText}>
-            Your personal academic command and visibility center.
-          </Text>
-        </View>
-      </View>
 
       <Text style={s.sectionTitle}>STUDENT PROFILE</Text>
       <View style={s.grid}>
@@ -564,8 +624,9 @@ export default function App() {
       <Page
         title={page[0]}
         subtitle={page[1]}
-        onBack={() => setScreen('home')}
-      />
+        onBack={goBack}
+        onHome={goHome}
+        />
     );
   };
 
@@ -638,70 +699,84 @@ const s = StyleSheet.create({
     color: '#111111',
     paddingVertical: 0,
   },
-  leadershipHero: {
-    width: '100%',
-    alignSelf: 'stretch',
-    position: 'relative',
-    overflow: 'hidden',
-    backgroundColor: '#87CEEB',
+  heroMenuButton: {
+    position: 'absolute',
+    top: 12,
+    left: 12,
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#DCE7E1',
   },
-  leadershipHeroImage: {
-    width: '100%',
-    height: undefined,
-    aspectRatio: 2 / 3,
-    alignSelf: 'stretch',
+  heroMenuIcon: {
+    fontSize: 25,
+    fontWeight: '900',
   },
-
-
-
-  quickSearchBar: {
-    width: '100%',
-    minHeight: 128,
-    marginTop: -14,
-    marginBottom: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 8,
-    flexDirection: 'row',
-    alignItems: 'stretch',
+  miniQuickSearch: {
+    position: 'absolute',
+    left: 10,
+    right: 10,
+    bottom: 0,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#DCE7E1',
+    padding: 10,
+    zIndex: 20,
+    elevation: 8,
+  },
+  miniQuickSearchInput: {
+    minHeight: 92,
+    borderWidth: 1,
+    borderColor: '#DCE7E1',
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 15,
+    lineHeight: 21,
+    backgroundColor: '#FFFFFF',
+  },
+  miniQuickSearchButton: {
+    alignSelf: 'flex-end',
+    marginTop: 9,
+    minHeight: 40,
+    paddingHorizontal: 18,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#B7DDF2',
-    borderRadius: 10,
-    zIndex: 30,
   },
-  quickSearchInput: {
-    flex: 1,
-    minHeight: 110,
-    paddingHorizontal: 12,
-    paddingTop: 10,
-    paddingBottom: 10,
-    color: '#10243A',
+  miniQuickSearchButtonText: {
     fontSize: 15,
-    lineHeight: 21,
-    backgroundColor: '#F7FBFD',
-    borderWidth: 1,
-    borderColor: '#B7DDF2',
-    borderRadius: 10,
-  },
-  quickSearchButton: {
-    width: 76,
-    minHeight: 110,
-    marginLeft: 8,
-    paddingHorizontal: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E8F6FF',
-    borderWidth: 1,
-    borderColor: '#B7DDF2',
-    borderRadius: 10,
-  },
-  quickSearchButtonText: {
-    fontSize: 13,
-    lineHeight: 18,
-    fontWeight: '900',
+    lineHeight: 15,
+    fontWeight: '800',
     textAlign: 'center',
-    color: '#10243A',
   },
+  leadershipHero: {
+    width: '100%',
+    aspectRatio: 1152 / 1368,
+    alignSelf: 'stretch',
+    position: 'relative',
+    overflow: 'visible',
+    backgroundColor: '#87CEEB',
+    marginTop: 0,
+    marginBottom: 0,
+    paddingTop: 0,
+  },
+  leadershipHeroImage: {
+    width: '100%',
+    height: '100%',
+    marginTop: 0,
+  },
+
+
+
   aatHero: {
     width: '100%',
     height: 245,
@@ -771,7 +846,8 @@ const s = StyleSheet.create({
     color: '#EAF7FF',
   },
   container: {
-    padding: 20,
+    paddingTop: 0,
+    paddingHorizontal: 0,
     paddingBottom: 50,
   },
   welcome: {
@@ -780,7 +856,8 @@ const s = StyleSheet.create({
     marginTop: 8,
   },
   homeSubtitle: {
-    fontSize: 15,
+    fontSize: 18,
+    
     lineHeight: 22,
     marginTop: 6,
     marginBottom: 18,
@@ -815,11 +892,12 @@ const s = StyleSheet.create({
     fontSize: 25,
     fontWeight: '900',
     marginTop: 0,
-    marginBottom: 4,
+    marginBottom: 0,
     lineHeight: 30,
   },
   sectionSubtitle: {
-    fontSize: 16,
+    fontSize: 18,
+    
     lineHeight: 22,
     marginTop: 0,
     marginBottom: 10,
@@ -925,6 +1003,32 @@ const s = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     marginTop: 4,
+  },
+  navigationBar: {
+    width: '100%',
+    minHeight: 54,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#87CEEB',
+  },
+  navigationButton: {
+    minWidth: 112,
+    minHeight: 42,
+    paddingHorizontal: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#B7DDF2',
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  navigationButtonText: {
+    fontSize: 15,
+    fontWeight: '900',
+    color: '#10243A',
   },
   backButton: {
     marginBottom: 12,
