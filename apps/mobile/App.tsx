@@ -1,5 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+import LearningModuleScreen from './src/learning/LearningModuleScreen';
+import { LearningModuleId } from './src/learning/learningModuleConfig';
 import {
   Pressable,
   BackHandler,
@@ -21,6 +23,7 @@ type Screen =
   | 'medm'
   | 'sap'
   | 'bm'
+  | 'aem'
   | 'academicSearch'
   | 'dccTcc'
   | 'library'
@@ -56,30 +59,30 @@ const learningModules: TileItem[] = [
   {
     id: 'ptdm',
     acronym: 'PTDM',
-    title: 'Personal Tutorial Drills',
+    title: 'Personal Tutor Drill Module',
     icon: '👨‍🏫',
-    description: 'Personal tutorial drills for guided practice',
+    description: 'Personal tutor-guided drills and practice',
   },
   {
     id: 'cedm',
     acronym: 'CEDM',
-    title: 'Certificate Examinations Drill Module',
+    title: 'Certificate Examination Drilling Module',
     icon: '🎓',
-    description: 'Certificate examinations drill and preparation',
+    description: 'Certificate examination preparation and drills',
   },
   {
     id: 'medm',
     acronym: 'MEDM',
-    title: 'Mock Examinations Drill Module',
+    title: 'Mock Examination Drill Module',
     icon: '📝',
-    description: 'Mock examination practice',
+    description: 'Mock examination practice and readiness',
   },
   {
     id: 'sap',
     acronym: 'SAP',
     title: 'Skill Acquisition Programme',
-    icon: '🛠️',
-    description: 'Structured skill acquisition, development and progression',
+    icon: '⚙️',
+    description: 'Practical skills, competencies and progression',
   },
   {
     id: 'bm',
@@ -88,29 +91,19 @@ const learningModules: TileItem[] = [
     icon: '📊',
     description: 'Business and operational modelling',
   },
-];
-
-const homeTools: TileItem[] = [
   {
-    id: 'dsc',
-    acronym: 'DSC',
-    title: 'Daily Subject Chart',
-    icon: '📅',
-    description: 'Daily subjects, lessons and recovery',
+    id: 'aem',
+    acronym: 'AEM',
+    title: 'Adult Education Module',
+    icon: '📖',
+    description: 'The ABC of Reading and Writing',
   },
   {
     id: 'dccTcc',
     acronym: 'DCC/TCC',
-    title: 'Termly Curriculum Chart',
+    title: 'Dynamic / Termly Curriculum Charts',
     icon: '🗓️',
     description: 'Curriculum compliance and workload distribution',
-  },
-  {
-    id: 'hallOfFame',
-    acronym: 'TOP 10',
-    title: 'Top 10 Star Earners',
-    icon: '🏆',
-    description: 'Top 10 Star Earners for each class level',
   },
   {
     id: 'library',
@@ -119,15 +112,8 @@ const homeTools: TileItem[] = [
     icon: '📚',
     description: 'Educational resources and authoritative sources',
   },
-  
-  {
-    id: 'suggestions',
-    acronym: 'SUGGEST',
-    title: 'Suggestion Center',
-    icon: '💡',
-    description: 'Suggestions, feedback and improvements',
-  },
 ];
+
 
 const dashboardItems: TileItem[] = [
   {
@@ -263,25 +249,21 @@ const menuGroups: MenuNode[] = [
     })),
   },
   {
-    label: 'QuickSearch',
-    children: [{ label: 'Search Anything', id: 'academicSearch' }],
-  },
-  {
-    label: 'DCC/TCC',
-    children: [{ label: 'Termly Curriculum Chart', id: 'dccTcc' }],
-  },
-  {
-    label: 'Library',
-    children: [{ label: 'ASK2PASS Library', id: 'library' }],
-  },
-  {
-    label: 'Hall of Fame',
-    children: [{ label: 'Top 10 Star Earners — Each Class Level', id: 'hallOfFame' }],
+    label: 'Hall of Fame — Top 10 Leaderboard',
+    children: [{ label: 'Hall of Fame — Top 10 Leaderboard', id: 'hallOfFame' }],
   },
   {
     label: 'Suggestion Center',
-    children: [{ label: 'Suggestions & Feedback', id: 'suggestions' }],
+    children: [{ label: 'Suggestion Center', id: 'suggestions' }],
   },
+  {
+    label: 'QuickSearch',
+    children: [{ label: 'Search Anything', id: 'academicSearch' }],
+  },
+
+
+
+
   {
     label: 'Policy',
     children: [{ label: 'Policies', id: 'policy' }],
@@ -304,13 +286,7 @@ function Tile({
       style={({ pressed }) => [s.tile, pressed && s.tilePressed]}
       onPress={onPress}
     >
-      {item.id === 'sap' ? (
-        <View style={s.sapTileIcon}>
-          <Text style={s.sapTileIconText}>SAP</Text>
-        </View>
-      ) : (
-        <Text style={s.tileIcon}>{item.icon}</Text>
-      )}
+      <Text style={s.tileIcon}>{item.icon}</Text>
       <Text style={s.tileAcronym}>{item.acronym}</Text>
       <Text style={s.tileTitle}>{item.title}</Text>
     </Pressable>
@@ -333,20 +309,11 @@ function Page({
       <View style={s.navigationBar}>
         <Pressable
           onPress={onBack}
-          style={s.navigationButton}
+          style={s.navigationArrow}
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Text style={s.navigationButtonText}>‹ Back</Text>
-        </Pressable>
-
-        <Pressable
-          onPress={onHome}
-          style={s.navigationButton}
-          accessibilityRole="button"
-          accessibilityLabel="Go to home"
-        >
-          <Text style={s.navigationButtonText}>⌂ Home</Text>
+          <Text style={s.navigationArrowText}>←</Text>
         </Pressable>
       </View>
       <Text style={s.pageTitle}>{title}</Text>
@@ -532,11 +499,6 @@ export default function App() {
       </Text>
 
       <View style={s.grid}>
-        {homeTools.map((item) => (
-          <View key={item.id} style={s.gridItem}>
-            <Tile item={item} onPress={() => go(item.id)} />
-          </View>
-        ))}
       </View>
 
       <Text style={s.sectionTitle}>USER DASHBOARD</Text>
@@ -640,6 +602,27 @@ const dashboard = (
     if (screen === 'home') return home;
     if (screen === 'dashboard') return dashboard;
 
+    const learningModuleIds: LearningModuleId[] = [
+      'scla',
+      'ptdm',
+      'cedm',
+      'medm',
+      'sap',
+      'bm',
+      'aem',
+    ];
+
+    if (learningModuleIds.includes(screen as LearningModuleId)) {
+      const moduleId = screen as LearningModuleId;
+
+      return (
+        <LearningModuleScreen
+          moduleId={moduleId}
+          onBack={goBack}
+        />
+      );
+    }
+
     const page = titles[screen];
     if (!page) return home;
 
@@ -649,7 +632,7 @@ const dashboard = (
         subtitle={page[1]}
         onBack={goBack}
         onHome={goHome}
-        />
+      />
     );
   };
 
@@ -783,7 +766,7 @@ const s = StyleSheet.create({
   },
   leadershipHero: {
     width: '100%',
-    aspectRatio: 1152 / 1368,
+    aspectRatio: 1024 / 1536,
     alignSelf: 'stretch',
     position: 'relative',
     overflow: 'visible',
@@ -968,22 +951,6 @@ const s = StyleSheet.create({
   tilePressed: {
     opacity: 0.72,
   },
-  sapTileIcon: {
-    width: 74,
-    height: 74,
-    borderRadius: 37,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#D9A800',
-    borderWidth: 6,
-    borderColor: '#F4C62E',
-  },
-  sapTileIconText: {
-    fontSize: 18,
-    fontWeight: '900',
-    color: '#FFFFFF',
-    letterSpacing: 0.5,
-  },
   tileIcon: {
     fontSize: 42,
     marginBottom: 7,
@@ -1027,6 +994,29 @@ const s = StyleSheet.create({
     lineHeight: 18,
     marginTop: 4,
   },
+  navigationButton: {
+    flex: 1,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 10,
+    backgroundColor: '#e8eef7',
+    marginHorizontal: 5,
+  },
+  navigationButtonText: {
+    fontWeight: '800',
+    textAlign: 'center',
+  },
+
+  navigationArrow: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  navigationArrowText: {
+    fontSize: 32,
+    fontWeight: '800',
+  },
+
   navigationBar: {
     width: '100%',
     minHeight: 54,
@@ -1036,22 +1026,6 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#87CEEB',
-  },
-  navigationButton: {
-    minWidth: 112,
-    minHeight: 42,
-    paddingHorizontal: 14,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#B7DDF2',
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  navigationButtonText: {
-    fontSize: 15,
-    fontWeight: '900',
-    color: '#10243A',
   },
   backButton: {
     marginBottom: 12,
