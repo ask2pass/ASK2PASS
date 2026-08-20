@@ -1,4 +1,8 @@
 import { Module } from '@nestjs/common';
+import { LearningCrossBindingModule } from '../learning-cross-binding/learning-cross-binding.module';
+import { LearningRuntimeModule } from '../learning-runtime/learning-runtime.module';
+import { LearningEngineModule } from '../learning-engine/learning-engine.module';
+
 import { BusinessModellingController } from './controllers/business-modelling.controller';
 import { BMLearningService } from './services/bm-learning.service';
 import { BMAssessmentService } from './services/bm-assessment.service';
@@ -9,6 +13,11 @@ import { BMAutoEngineAccessService } from './services/bm-auto-engine-access.serv
 import { BMProgressService } from './services/bm-progress.service';
 
 @Module({
+  imports: [
+    LearningCrossBindingModule,
+    LearningRuntimeModule,
+    LearningEngineModule,
+  ],
   controllers: [BusinessModellingController],
   providers: [
     BMLearningService,

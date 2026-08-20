@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, In, Repository } from 'typeorm';
 
 import { Curriculum } from './entities/curriculum.entity';
 import { ProgrammeCategory } from './enums/programme-category.enum';
@@ -13,6 +13,57 @@ export class CurriculumService {
     @InjectRepository(Curriculum)
     private readonly curriculumRepository: Repository<Curriculum>,
   ) {}
+
+  async searchCurriculum(params: {
+    programme?: string;
+    subject?: string;
+    topic?: string;
+    lessonTitle?: string;
+    message?: string;
+    limit?: number;
+  }): Promise<Curriculum[]> {
+    const limit = Math.min(Math.max(params.limit ?? 10, 1), 50);
+
+    const searchText = params.message?.trim();
+
+    const textConditions = searchText
+      ? [
+          { subject: ILike(`%${searchText}%`), active: true },
+          { topic: ILike(`%${searchText}%`), active: true },
+          { lessonTitle: ILike(`%${searchText}%`), active: true },
+          { programme: ILike(`%${searchText}%`), active: true },
+        ]
+      : undefined;
+
+    const where = textConditions
+      ? textConditions
+      : {
+          active: true,
+          ...(params.programme
+            ? { programme: ILike(`%${params.programme}%`) }
+            : {}),
+          ...(params.subject
+            ? { subject: ILike(`%${params.subject}%`) }
+            : {}),
+          ...(params.topic
+            ? { topic: ILike(`%${params.topic}%`) }
+            : {}),
+          ...(params.lessonTitle
+            ? { lessonTitle: ILike(`%${params.lessonTitle}%`) }
+            : {}),
+          ...(params.programme || params.subject || params.topic || params.lessonTitle
+            ? {}
+            : { examination: In([CertificateExamination.WASSCE, CertificateExamination.WAEC_GCE]) }),
+        };
+
+    return this.curriculumRepository.find({
+      where,
+      take: limit,
+      order: {
+        createdAt: 'ASC',
+      },
+    });
+  }
 
   async createCurriculum(
     programmeCategory: ProgrammeCategory,

@@ -1,5 +1,7 @@
 import { BusinessModellingModule } from './business-modelling/business-modelling.module';
 import { Module } from '@nestjs/common';
+import { CentralAIModule } from './central-ai/central-ai.module';
+
 import { AATAvatarModule } from './aat-avatar/aat-avatar.module';
 import { AcademicPowerModule } from './academic-power/academic-power.module';
 import { OfflineContinuityModule } from './offline-continuity/offline-continuity.module';
@@ -50,6 +52,7 @@ import { LearningPathModule } from './learning-path/learning-path.module';
 
 @Module({
   imports: [
+    CentralAIModule,
     BusinessModellingModule,
     AATAvatarModule,AcademicPowerModule, OfflineContinuityModule, AdaptiveLearningModule, LearningProgressModule,
 SAPLearningIntegrationModule,

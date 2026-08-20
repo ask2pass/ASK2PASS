@@ -1,0 +1,487 @@
+
+# ASK2PASS Adult Education Module — The ABC of Reading and Writing
+
+## Table of Contents
+
+1. Purpose and Scope
+2. Programme Identity and Terminology
+3. Architectural Principles
+4. Curriculum Model
+5. A–Z Curriculum Framework
+6. Progressive Learning Rule
+7. Mastery and Authorized Topic Jumping
+8. Daily Study Cycle
+9. Break Rule
+10. Continuous Study and Session Continuity
+11. Classroom Progression Chart
+12. Adaptive Learning
+13. Language Controls
+14. Monthly Examination
+15. Lesson Notes
+16. Assessments and Learner Records
+17. Stars & Awards Exclusion
+18. Backend Integration Requirements
+19. Progression State and Progression States
+20. Topic Generation and Topic Authorization
+21. Study Session Lifecycle
+22. Assessment and Mastery Gates
+23. Adult Education Classroom Requirements
+24. Mobile Learning Module Integration
+25. Security, Authority and Data Ownership
+26. Persistence and Record Retention
+27. Error Recovery and Continuity
+28. Testing and Acceptance Criteria
+29. Future Extensibility
+30. Implementation and Delivery Requirements
+
+
+# ASK2PASS — Adult Education Module
+## The ABC of Reading and Writing
+### Architecture & Functional Specification
+
+## 1. Purpose
+
+The Adult Education Module — The ABC of Reading and Writing — provides a dedicated progressive literacy pathway for adult learners.
+
+It develops:
+
+- reading
+- writing
+- comprehension
+- vocabulary
+- communication
+- practical functional literacy
+
+The programme progresses continuously from foundational literacy toward independent literacy and mastery.
+
+---
+
+## 2. Programme Identity
+
+**Module Name:** Adult Education Module — The ABC of Reading and Writing
+
+**Acronym:** AEM
+
+**Programme Type:** Adult Education / Functional Literacy
+
+ABC represents the foundational nature of the programme and does not restrict the programme to alphabet instruction.
+
+The complete curriculum uses an A–Z mastery framework.
+
+---
+
+## 3. Architectural Principle
+
+AEM is not a new learning engine.
+
+It uses the existing ASK2PASS:
+
+- AI Engine
+- Adaptive Learning
+- Learning Path
+- Learning Orchestration
+- Learning Delivery
+- Learning Runtime
+- Learning Progress
+- Assessment Engine
+- Learner Records
+- Lesson Records
+
+The existing AI Engine remains the learning engine.
+
+Adult Education supplies its own curriculum, progression rules and mastery policy.
+
+AEM does not duplicate existing engines.
+
+DSC and TCC/DCC are not used as the Adult Education progression mechanism.
+
+---
+
+## 4. Curriculum Model
+
+The programme uses an A–Z master curriculum framework.
+
+A–Z represents curriculum domains, not merely 26 lessons.
+
+Each domain may contain dynamically generated topics, exercises, reviews and assessments.
+
+### A — Alphabet & Print Awareness
+
+Letter recognition, uppercase/lowercase, alphabet sequence, print awareness and letter identification.
+
+### B — Beginning Sounds
+
+Initial sounds, sound discrimination and letter-to-sound relationships.
+
+### C — Consonants & Vowels
+
+Vowels, consonants, short/long vowel awareness and core sound patterns.
+
+### D — Decoding
+
+Sound blending, syllables, CVC patterns and decoding unfamiliar simple words.
+
+### E — Early Word Reading
+
+Simple words, high-frequency words, word recognition and word-picture association.
+
+### F — Phonics & Word Families
+
+Common sound patterns, rhyming, word families and pattern recognition.
+
+### G — Guided Reading
+
+Simple sentences, reading fluency and extracting meaning from short sentences.
+
+### H — High-Frequency Vocabulary
+
+Common everyday words, personal information, family, places, time and objects.
+
+### I — Information Reading
+
+Signs, labels, notices, instructions, forms and short messages.
+
+### J — Joining Words
+
+Combining words, sentence formation and basic conjunctions.
+
+### K — Key Vocabulary
+
+Everyday vocabulary expansion, opposites, synonyms and contextual meaning.
+
+### L — Listening to Reading
+
+Hear → identify → read → understand → use.
+
+### M — Meaning & Comprehension
+
+Who, what, where, when, why, main idea and simple inference.
+
+### N — Numbers & Numeracy Literacy
+
+Reading numbers, dates, prices, quantities, addresses and practical numerical information.
+
+### O — Oral-to-Written Language
+
+Speaking-to-writing, dictation, everyday communication and expressing simple ideas.
+
+### P — Practical Writing
+
+Names, addresses, notes, lists, messages and basic forms.
+
+### Q — Question Literacy
+
+Understanding, reading and answering questions; asking questions and question words.
+
+### R — Reading Fluency
+
+Accuracy, repeated reading, phrase recognition and progressively longer passages.
+
+### S — Sentence Construction
+
+Subject, verb, object, word order, capitalization and punctuation.
+
+### T — Text Understanding
+
+Short paragraphs, main ideas, supporting details, sequence and simple summaries.
+
+### U — Useful Everyday Documents
+
+Notices, receipts, instructions, schedules and public/workplace information.
+
+### V — Vocabulary Expansion
+
+Context, word relationships, meaning and usage.
+
+### W — Writing Development
+
+Sentence writing, short paragraphs, descriptions and functional communication.
+
+### X — Expression
+
+Communicating ideas, written responses, descriptions and organizing thoughts.
+
+### Y — Your Everyday Literacy
+
+Integrated practical reading, writing, listening, understanding and communication.
+
+### Z — Independent Literacy & Mastery
+
+Independent reading, comprehension, writing and practical functional-literacy performance.
+
+---
+
+## 5. Progressive Learning Rule
+
+AEM uses continuous progressive learning.
+
+The system automatically selects or generates the next appropriate learning activity using:
+
+- current mastery
+- previous performance
+- prerequisite mastery
+- adaptive difficulty
+- learner history
+- assessment results
+
+The learner normally cannot manually jump to arbitrary unmastered topics.
+
+The backend controls the authorized progression boundary.
+
+Progression is mastery-based, not calendar-based.
+
+---
+
+## 6. Mastery and Authorized Topic Jumping
+
+A learner may request a later topic or domain of interest.
+
+A request does not automatically unlock that topic.
+
+The system may first generate an entry/proficiency assessment covering the required prerequisites.
+
+### If the learner passes
+
+The system may:
+
+- recognize demonstrated competencies
+- authorize the requested topic
+- record the assessment evidence
+- update progression
+- preserve previous records
+- continue adaptive learning from the authorized position
+
+### If the learner does not pass
+
+The system shall:
+
+- keep the requested topic locked
+- identify prerequisite weaknesses
+- generate reinforcement
+- return the learner to the appropriate progression point
+
+Therefore, topic jumping is permitted only through demonstrated competence.
+
+---
+
+## 7. Daily Study Cycle
+
+A normal AEM study cycle is **40 minutes**.
+
+### Lesson — 25 minutes
+
+Adaptive teaching and learning activity.
+
+The 25 minutes is a lesson duration, not a one-topic duration.
+
+A fast learner may complete one, two, three or more topics within the period where mastery is demonstrated.
+
+### Review — 5 minutes
+
+Review of learning completed during the study cycle.
+
+### CBT Quiz — 10 minutes
+
+A short computer-based assessment covering the study-cycle learning.
+
+### Total
+
+**25 + 5 + 10 = 40 minutes.**
+
+The 40-minute cycle is not a topic boundary.
+
+---
+
+## 8. Break Rule
+
+After a normal 40-minute study cycle, the system establishes a break boundary.
+
+The break does not impose a daily study limit.
+
+The learner may return and begin another study cycle whenever they choose.
+
+There is no imposed limit on:
+
+- study cycles per day
+- study days
+- lifetime study sessions
+
+The learner may continue studying at any time.
+
+---
+
+## 9. Continuous Study
+
+The backend preserves learning continuity across sessions.
+
+When the learner logs in or enters the classroom, the system should restore:
+
+- A–Z position
+- current domain
+- current topic
+- mastery state
+- recent activity
+- completed topics
+- reinforcement requirements
+- next authorized topic
+- study-cycle status
+
+The learner should continue from the correct point without manually searching for where they stopped.
+
+If a learner leaves during a study cycle, the appropriate session state must be retained.
+
+---
+
+## 10. Progression Chart
+
+The Adult Education classroom shall display a persistent progression chart.
+
+It must be visible when the learner enters the classroom and when the learner completes or logs out of a learning session.
+
+Conceptually:
+
+A → B → C → D → E → F → G → H → I → J → K → L → M
+                              ↑
+                           CURRENT
+
+N → O → P → Q → R → S → T → U → V → W → X → Y → Z
+
+The chart shall show:
+
+- completed domains
+- current domain
+- current topic
+- mastered topics
+- reinforcement topics
+- authorized jumps
+- upcoming authorized learning
+
+Each A–Z domain may contain multiple topics.
+
+The chart therefore represents both domain-level and topic-level progress.
+
+The backend is authoritative for progression.
+
+---
+
+## 11. Adaptive Learning
+
+Adaptive mode is mandatory.
+
+The system dynamically controls:
+
+- topic selection
+- difficulty
+- explanations
+- practice quantity
+- reinforcement
+- review
+- assessment generation
+- progression decisions
+
+Fast learners may progress faster.
+
+Learners requiring reinforcement receive additional adaptive instruction.
+
+The system must not force equal pacing on all learners.
+
+Adaptive learning may permit several topics to be completed within one 25-minute lesson when mastery is demonstrated.
+
+---
+
+## 12. Language Controls
+
+The classroom shall provide language controls.
+
+Language support shall integrate with the AI learning experience and may affect:
+
+- explanations
+- instructions
+- examples
+- spoken/audio support
+- clarification
+- learner interaction
+
+Language configuration must remain extensible.
+
+Changing language does not bypass curriculum prerequisites or mastery requirements.
+
+---
+
+## 13. Monthly Examination
+
+Every AEM learner must undertake a monthly examination.
+
+It contains:
+
+1. CBT examination
+2. Essay/writing examination
+
+The monthly examination is recorded in the learner's formal assessment history.
+
+It is separate from the normal 10-minute study-cycle CBT.
+
+### Study-cycle CBT
+
+- 10 minutes
+- frequent
+- formative
+- measures current learning
+
+### Monthly Examination
+
+- formal periodic assessment
+- CBT component
+- Essay/writing component
+- recorded in assessment history
+
+---
+
+## 14. Lesson Notes
+
+A lesson note shall be filed after every completed lesson/study activity using the existing ASK2PASS lesson-record architecture.
+
+The record should capture, where applicable:
+
+- learner
+- date/time
+- programme
+- A–Z domain
+- topics covered
+- objectives
+- adaptive state
+- performance
+- mastery outcome
+- review result
+- CBT result
+- next authorized topic
+- reinforcement requirements
+
+Lesson notes remain accessible through the learner's records.
+
+AEM shall not create a duplicate lesson-record system.
+
+---
+
+## 15. Assessments and Records
+
+AEM learners receive the normal ASK2PASS learning-record discipline.
+
+Records shall include:
+
+- lesson records
+- progression records
+- mastery records
+- study-session records
+- CBT quiz records
+- monthly examination records
+- essay assessment records
+- adaptive learning history
+- authorized progression jumps
+- reinforcement history
+
+All records are persistent and backend-authoritative.
+
+An authorized progression jump must not erase previous learning history.
+
+Assessment results and mastery evidence remain available for future adaptive decisions and classroom continuity.
